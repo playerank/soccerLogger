@@ -11,7 +11,7 @@ a) The dropdown element allows to select which match you want to tag.
 
 b) The player shows the video of the match. The buttons under the video allows to play/pause the video, go to previous frame, go to next frame, define the start time and the end time of the selected event.
 
-c) The table shows all the events that has already been annotated. To create an event use the 'Add Event' button. The rows are clickable and set the video at the start time of the event. In addition when you set the time window you can save the data inside the specific csv by clicking the button 'Update CSV'. \n
+c) The table shows all the events that has already been annotated. To create an event use the 'Add Event' button. The rows are clickable and set the video at the start time of the event. In addition when you set the time window you can save the data inside the specific csv by clicking the button 'Update CSV'.                                                
 All the buttons on the interface are usable from the keyboard or from a common joypad.
 
 ## Run the interface
