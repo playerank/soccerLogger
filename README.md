@@ -11,7 +11,7 @@ a) The dropdown element allows to select which match you want to tag.
 
 b) The player shows the video of the match. The buttons under the video allows to play/pause the video, go to previous frame, go to next frame, define the start time and the end time of the selected event.
 
-c) The table shows all the events that has already been annotated. To create an event use the 'Add Event' button. The rows are clickable and set the video at the start time of the event. In addition when you set the time window you can save the data inside the specific csv by clicking the button 'Update CSV'.
+c) The table shows all the events that has already been annotated. To create an event use the 'Add Event' button. The rows are clickable and set the video at the start time of the event. In addition when you set the time window you can save the data inside the specific csv by clicking the button 'Update CSV'. \n
 All the buttons on the interface are usable from the keyboard or from a common joypad.
 
 ## Run the interface
@@ -25,7 +25,7 @@ Once launched, on your shell you should have a success message such as the follo
 
 ![bash](/Scheme/bash.png)  
 
-Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```\\
+Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```                                                                     
 Once the matches are annotated, a csv file with the annotation is saved in the path Event Tagging Interface/Data.
 
 
