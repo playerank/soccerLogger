@@ -25,7 +25,7 @@ Once launched, on your shell you should have a success message such as the follo
 
 ![bash](/Scheme/bash.png)  
 
-Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```
+Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```\\
 Once the matches are annotated, a csv file with the annotation is saved in the path Event Tagging Interface/Data.
 
 
