@@ -2,6 +2,7 @@
 
 The code in this repository implements **Event Tagging Interface**, a web application which allows a user to define temporal window of events from soccer video broadcasts. 
 Events which can be chosen are: **Pass**, **Shot** and **Goal**.
+
 The image below shows how is the mainly UI of the interface.
 
 ![EventTaggingInterface](/Scheme/manual_annotation_application.png)  
@@ -21,6 +22,7 @@ To run the interface you need to run the requirements.txt file that contains all
 ```python events_tagging_dashboard.py```  
 
 Once launched, on your shell you should have a success message such as the following:
+
 ![bash](/Scheme/bash.png)  
 
 Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```
