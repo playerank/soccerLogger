@@ -17,7 +17,7 @@ Before launching the interface it is necessary to insert the videos in mp4 forma
 To run the interface you need to run the requirements.txt file that contains all the dependencies required, especially the flask library. As a first step to start the interface you must first open a bash in order to launch the following script:  
 ```python events_tagging_dashboard.py```  
 Once launched, on your shell you should have a success message such as the following:
-![bash](/Scheme/bash.jpg)  
+![bash](/Scheme/bash.png)  
 Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```
 Once the matches are annotated, a csv file with the annotation is saved in the path Event Tagging Interface/Data.
 
