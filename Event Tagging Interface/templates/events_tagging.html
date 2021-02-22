@@ -11,219 +11,578 @@
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="./static/gamecontroller.js-1.5.0/dist/gamecontroller.min.js"></script>
 
+    <script src="{{ url_for('static', filename='speech_recognition/SR.js') }}"></script>
+    <script src="{{ url_for('static', filename='css_function/CSS.js') }}"></script>
+
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.min.js"></script>
+
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"> 
+    <!-- link with all icons https://material.io/resources/icons/?style=baseline -->
+
+    
+    
+    <!--- Inizio le modifiche per Speech Recogniction
+    la libreria usata è SpeechRecogniction che al momento delle modifiche 01/2021 impone l'uso di alcuni browser
+    PC - Chrome, Edge
+    Phone - WebView Android ChromeAndroid Samsung Internet
+    -->
+  
     <script> 
+      var event_success = false 
+
       gameControl
         .on('connect', gamepad => {
           var last_button = ''
           var last_event_button = ''
           var current_event_page = 0
+          var counter = 0
+          let tableData = {}
 
-          gamepad.on('button4', () => {
-            $('#prev-frame').trigger("click")
-          });
-          gamepad.on('button5', () => {
-            $('#next-frame').trigger("click")
-          });
-          gamepad.on('button0', () => {
-            if (last_button != 'button0') {
+          let count_duel_press = 0
+          let double_press = 0
+          
+
+//add new event to the list
+          gamepad.after('button13', () => {
+            
+            
+            if (last_button != 'button13' && double_press == 1 && event_success) {
+              
               $('#new-event').trigger("click")
-              last_button = 'button0'
+              last_button = 'button13'
               window.setTimeout(function(){last_button=''}, 300)
+              var current_event_number = $('#myTable tr').length
+              document.getElementById('table_div').scrollTop += (current_event_number * 49);
+              double_press = 0
             }
+            else{
+              double_press += 1
+            }
+          });   
+          
+
+
+//event PASS - PASSAGGIO
+          gamepad.before('button0', () => {
+
+            set_color_row(this, "white")
+            double_press = 0
+            //when I press the button
+            if($("#possession_player").is(":visible") == true){
+              $("#possession_player").hide()
+              $("#recovery_player").hide()
+            }
+            
+              
+            if (last_button != 'button0') {
+              
+              
+              $('#name_event').val("Pass") 
+              var vid = document.getElementById("myVideo");
+              
+              var time_start = (Math.round( vid.currentTime * 100) / 100)
+              $("#time_event_start").val(time_start)
+            }
+            else{
+              if( $('#time_event_start').val() < $('#time_event_end').val() ){
+                //invert, becouse is a new pass
+                temp = $('#time_event_start').val()
+                $('#time_event_start').val($('#time_event_end').val())
+                $('#time_event_end').val(temp)
+              }
+
+              var vid = document.getElementById("myVideo");
+              vid.play()
+            }
+          })
+          //when I release the button
+          .after('button0', () => {
+            
+              var vid = document.getElementById("myVideo");
+              vid.pause();
+              var time_end = (Math.round( vid.currentTime * 100) / 100)
+              time_start = $("#time_event_start").val()
+              if(time_end < time_start){
+                $("#time_event_start").val(time_end)
+                time_end = time_start
+              }
+              $("#time_event_end").val(time_end)
+
+              number = speech()  
+
+              event_success = true
+
+              last_button = 'button0'   
           });
-          gamepad.on('button3', () => {
-            if (last_button != 'button3') {
-              $('#event-start').trigger("click")
-              last_button = 'button3'
-              window.setTimeout(function(){last_button=''}, 300)
-            }
+
+//event CROOS - ASSIST
+          gamepad.before('button1', () => {
+
+            double_press = 0
+            set_color_row(this, "white")
+            //when I press the button
+            if($("#possession_player").is(":visible") == true){
+                $("#possession_player").hide()
+                $("#recovery_player").hide()
+              }
+                
+              if (last_button != 'button1') {
+                
+                
+                $('#name_event').val("Cross") 
+                var vid = document.getElementById("myVideo");
+                
+                var time_start = (Math.round( vid.currentTime * 100) / 100)
+                $("#time_event_start").val(time_start)
+              }
+              else{
+                if( $('#time_event_start').val() < $('#time_event_end').val() ){
+                  //invert, becouse is a new pass
+                  temp = $('#time_event_start').val()
+                  $('#time_event_start').val($('#time_event_end').val())
+                  $('#time_event_end').val(temp)
+                }
+
+                var vid = document.getElementById("myVideo");
+                vid.play()
+              }
+          })
+          //when I release the button
+          .after('button1', () => {
+            
+              var vid = document.getElementById("myVideo");
+              vid.pause();
+              var time_end = (Math.round( vid.currentTime * 100) / 100)
+              time_start = $("#time_event_start").val()
+              if(time_end < time_start){
+                $("#time_event_start").val(time_end)
+                time_end = time_start
+              }
+              $("#time_event_end").val(time_end)
+
+              number = speech()  
+
+              last_button = 'button1'   
           });
-          gamepad.on('button1', () => {
-            if (last_button != 'button1') {
-              $('#event-end').trigger("click")
-              last_button = 'button1'
-              window.setTimeout(function(){last_button=''}, 300)
+
+
+
+//event SHOT - TIRO
+          gamepad.before('button2', () => {
+
+            double_press = 0
+            set_color_row(this, "white")
+              //when I press the button
+            if($("#possession_player").is(":visible") == true){
+              $("#possession_player").hide()
+              $("#recovery_player").hide()
             }
-          }); 
-          gamepad.on('button2', () => {
+            
             if (last_button != 'button2') {
-              $('#start-pause').trigger("click")
-              last_button = 'button2'
-              window.setTimeout(function(){last_button=''}, 300)
+              
+              
+              $('#name_event').val("Shot") 
+              var vid = document.getElementById("myVideo");
+              
+              var time_start = (Math.round( vid.currentTime * 100) / 100)
+              $("#time_event_start").val(time_start)
             }
-          }); 
+            else{
+              if( $('#time_event_start').val() < $('#time_event_end').val() ){
+                //invert, becouse is a new pass
+                temp = $('#time_event_start').val()
+                $('#time_event_start').val($('#time_event_end').val())
+                $('#time_event_end').val(temp)
+              }
 
-         });
+              var vid = document.getElementById("myVideo");
+              vid.play()
+            }
+          })
+          //when I release the button
+          .after('button2', () => {
+            
+              var vid = document.getElementById("myVideo");
+              vid.pause();
+              var time_end = (Math.round( vid.currentTime * 100) / 100)
+              time_start = $("#time_event_start").val()
+              if(time_end < time_start){
+                $("#time_event_start").val(time_end)
+                time_end = time_start
+              }
+              $("#time_event_end").val(time_end)
 
+              number = speech()  
+
+              event_success = true
+
+              last_button = 'button2'   
+          });
+
+//event KEY PASS - PASSAGGIO FILTRANTE
+          gamepad.before('button3', () => {
+
+            double_press = 0
+            set_color_row(this, "white")
+            //when I press the button
+            if($("#possession_player").is(":visible") == true){
+              $("#possession_player").hide()
+              $("#recovery_player").hide()
+            }
+            
+              
+            if (last_button != 'button3') {
+
+              $('#name_event').val("Key Pass") 
+              var vid = document.getElementById("myVideo");
+              
+              var time_start = (Math.round( vid.currentTime * 100) / 100)
+              $("#time_event_start").val(time_start)
+            }
+            else{
+              if( $('#time_event_start').val() < $('#time_event_end').val() ){
+                //invert, becouse is a new pass
+                temp = $('#time_event_start').val()
+                $('#time_event_start').val($('#time_event_end').val())
+                $('#time_event_end').val(temp)
+              }
+
+              var vid = document.getElementById("myVideo");
+              vid.play()
+            }
+          })
+          //when I release the button
+          .after('button3', () => {
+            
+              var vid = document.getElementById("myVideo");
+              vid.pause();
+              var time_end = (Math.round( vid.currentTime * 100) / 100)
+              time_start = $("#time_event_start").val()
+              if(time_end < time_start){
+                $("#time_event_start").val(time_end)
+                time_end = time_start
+              }
+              $("#time_event_end").val(time_end)
+
+              number = speech()  
+              
+              event_success = true
+              
+              last_button = 'button3'   
+          });
+
+//event DUEL
+//the duel is divide in 4 ste
+//step 0 : indicate event = Duel
+//step 1 : speech possession_player
+//step 2 : speech recovery_player
+//step 3 : press -> start video
+//         release -> stop video + speach win_player
+          gamepad.before('button5', () => {
+
+            double_press = 0
+            set_color_row(this, "white")
+
+
+            console.log(count_duel_press)
+            $("#possession_player").show()
+            $("#recovery_player").show()
+
+              //when I press the button
+            if (last_button != 'button5') {
+              
+              $('#name_event').val("Duel") 
+              var vid = document.getElementById("myVideo");
+              
+              var time_start = (Math.round( vid.currentTime * 100) / 100)
+              $("#time_event_start").val(time_start)
+              last_button = 'button5'
+            }
+            else{
+              switch (count_duel_press){
+                case 1:
+                  document.getElementById('possession_player_number').style.backgroundColor = 'aquamarine' ;
+                  $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
+
+                  break;
+                case 2:
+                  document.getElementById('recovery_player_number').style.backgroundColor = 'aquamarine' ;
+                  $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
+
+                  break;
+                case 3:
+                  var vid = document.getElementById("myVideo");
+
+                  vid.play()
+                  break;
+              }
+                
+            
+          }
+
+          count_duel_press += 1
+          })
+          .after('button5', () => {
+            if(count_duel_press == 4){
+              var vid = document.getElementById("myVideo");
+              vid.pause()
+
+              var time_end = (Math.round( vid.currentTime * 100) / 100)
+              time_start = $("#time_event_start").val()
+              if(time_end < time_start){
+                $("#time_event_start").val(time_end)
+                time_end = time_start
+              }
+              $("#time_event_end").val(time_end)
+
+              $("#winner_player").val( speech_duel(this, "winner_player"))
+
+              event_success = true
+
+              count_duel_press = 0
+            }
+            
+          });
+
+
+//go to the previous frame
+          gamepad.on('button6', () => {
+            double_press = 0
+            var vid = document.getElementById("myVideo");
+            vid.pause();
+            vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.04);
+          });
+          
+//go to the next frame
+          gamepad.on('button7', () => {
+            double_press = 0
+            var vid = document.getElementById("myVideo");
+            vid.pause();
+            vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.04);
+          });
+          
+//show/hiden team A
+          gamepad.on('button10',     () => { 
+                    double_press = 0
+                    $('#showTeamA').modal('show'); })
+                 .after('button10',  () => { $('#showTeamA').modal('hide');});
+
+//show/hiden team B
+          gamepad.on('button11',     () => { 
+                    double_press = 0
+                    $('#showTeamB').modal('show'); })
+                 .after('button11',  () => { $('#showTeamB').modal('hide');});
+
+//change the active team
+          gamepad.on('button4',     () => { double_press = 0  })
+                 .after('button4',  () => { if($('#active_team').val() == 'A'){ $('#active_team').val('B') } else { $('#active_team').val('A')};});
+
+//event fail
+          gamepad.after('button14', () => { 
+              if(event_success){
+                double_press = 0
+                
+                set_color_row(this, "LightCoral")
+
+                console.log("evento fallito")
+                event_result = "FAIL"
+                $("#event_result").val("FAIL")
+              }
+              
+          });
+
+//event success
+          gamepad.after('button15', () => { 
+              if(event_success){
+                double_press = 0
+
+                set_color_row(this, "lightgreen")
+
+                console.log("evento ok")
+                event_result = "SUC"
+                console.log(event_result)
+                $("#event_result").val("SUCC")
+              }
+          });
+  
+  
+      });
     </script>
 
-    <script type="text/javascript">
 
-      jQuery(document).ready(function($) {
  
-          var url = window.location.href
-          if (url.includes("Pass")){
-            $("#pass-events").attr('checked', true);
-          }
-          else if (url.includes("Shot")){
-            $("#shot-events").attr('checked', true);
-          }
-          else{
-            $("#goal-events").attr('checked', true);
-          } 
+    <script type="text/javascript">
+      jQuery(document).ready(function() {
 
-         $(window).keydown(function(event) {
-            if(event.which == 87) {  //w
-                $('#start-pause').trigger("click")
-              event.preventDefault();
-            }
-            if(event.which == 69) {  //e
-                $('#next-frame').trigger("click")
-              event.preventDefault();
-            }
-            if(event.which == 81) {  //q
-                $('#prev-frame').trigger("click")
-              event.preventDefault();
-            }
-            if(event.which == 79) {  //o
-                $('#event-start').trigger("click")
-              event.preventDefault();
-            }
-            if(event.which == 80) {  //p
-                $('#event-end').trigger("click")
-              event.preventDefault();
-            }
-            if(event.which == 76) {  //l
-                $('#new-event').trigger("click")
-              event.preventDefault();
-            }
-          });
 
-         $('#myTable').DataTable( {
+        var name_event = $('#name_event').val()
+
+        var active_team = $('#active_team').val("A")
+        var event_result = ""
+                  
+        var url = window.location.href
+        
+        if (url.includes("Events")){
+          $("#pass-events").attr('checked', true);
+        }
+
+        $(window).keydown(function(event) {
+          
+          if(event.which == 76) {  //l
+              $('#new-event').trigger("click")
+            event.preventDefault();
+          }
+        });
+
+
+        $('#myTable').DataTable( {
           scrollX: false,
+                  
           scrollCollapse: true,
           paging: false,
           searching: false,
           info: false,
+
+          order : [[0,"asc"]],
+   
           language: { 
             emptyTable: null,
             infoEmpty: null,
-            zeroRecords: null
+            zeroRecords: null,
             /*searchPanes: {
               emptyPanes: null
             }*/
-          },
-          select: 'single'
-         }); 
-
-         $('#myTable').on( 'click', 'tbody tr', function () {     
-           var time = $( this ).find('td:nth-child(2)').text();
-           var vid = document.getElementById("myVideo");
-           vid.currentTime = time 
-         });
-
-         $("#next-frame").click(function() {
-           var vid = document.getElementById("myVideo");
-           vid.pause();
-           vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.04);
-         });
-
-         $("#prev-frame").click(function() {
-           var vid = document.getElementById("myVideo");
-           vid.pause();
-           vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.04);
-         });
-
-         $("#start-pause").click(function() {
-           var vid = document.getElementById("myVideo");
-           if (vid.paused) {
-             vid.play();
-             $(this).html('<i class="mdi mdi-pause"></i>')
-           } else {
-             vid.pause();
-             $(this).html('<i class="mdi mdi-play-arrow mdi-lg"></i>')
-           }
-         });  
-
-         $("#event-start").click(function() {
-           var vid = document.getElementById("myVideo");
-           var time_start = (Math.round( vid.currentTime * 100) / 100)
-           $("#val-1").val(time_start)
-         });
-
-         $("#event-end").click(function() {
-           var vid = document.getElementById("myVideo");
-           vid.pause();
-           var time_start = (Math.round( vid.currentTime * 100) / 100)
-           $("#val-2").val(time_start)
-
-         });
-
-         var csv_is_new = true
-         var first_row_number = $('#myTable tbody tr:first').find('td:nth-child(1)').text()
-         if(first_row_number == 1){
-          csv_is_new = false
-         }
-
-         $("#new-event").click(function() {
-           
-          if(first_row_number == 1){
-            var current_event_number = $('#myTable tr').length
-          }
-          else{
-            var current_event_number = $('#myTable tr').length - 1
-          }
-          var value1 = $("#val-1").val()
-          var value2 = $("#val-2").val()
-          var myTab = document.getElementById("myTable")
-          var row = myTab.insertRow(current_event_number) 
-  
-          var td0 = row.insertCell(0)
-          var td1 = row.insertCell(1)
-          var td2 = row.insertCell(2)
-          var node0 = document.createTextNode(current_event_number)
-          var node1 = document.createTextNode(value1)
-          var node2 = document.createTextNode(value2) 
-          td0.appendChild(node0)
-          td1.appendChild(node1)
-          td2.appendChild(node2)
-         });  
-
-         $("#update-csv").click(function() {
-
-            var table_matrix = new Array()
-            $('#myTable tr').each(function(){
-                var row_list = ""
-                var firstLine = true
-                $(this).find('td').each(function(){
-                  if (firstLine) {
-                    row_list += $(this).text()
-                    firstLine = false
-                  }
-                  else {
-                    row_list += ";" + $(this).text()
-                  }
-                })
-                table_matrix.push(row_list)
-            })  
-            if(csv_is_new){
-              table_matrix.pop(-1)
-            }
             
-            $.ajax({
-             type: "POST",
-             data: JSON.stringify({table:table_matrix}),
-             url: "/{{match}}/update",
-             contentType: "application/json; charset=utf-8",
-             success: function(dat) { console.log(dat);}
-            });
+                            
+          },
+        
+          select: 'single',   
+                  
+        }); 
+                      
+        $('#myTable').on( 'click', 'tbody tr', function () {     
+          var time = $( this ).find('td:nth-child(2)').text();
+          var vid = document.getElementById("myVideo");
 
-            $.ajax({
-              url: '/{{match}}',
-              success: function() {
-                  window.location.reload();
-              }
-            });
+          vid.currentTime = time 
+        });
+
+        var csv_is_new = true
+        var first_row_number = $('#myTable tbody tr:first').find('td:nth-child(1)').text()
+        if(first_row_number == 1){
+          csv_is_new = false
+        }
+        
+        $("#new-event").click(function() {
+
+          console.log(event_result)
+
+          if($('#name_event').val() != "Event"){
+            if(first_row_number == 1){
+                  var current_event_number = $('#myTable tr').length
+                }
+                else{
+                  var current_event_number = $('#myTable tr').length - 1
+                }
+                var time_event_start = $("#time_event_start").val()
+                var time_event_end = $("#time_event_end").val()
+                var player_number = $("#player_number").val()
+                
+                
+                var myTab = document.getElementById("myTable")
+                var row = myTab.insertRow(current_event_number) 
+                
+                var td0 = row.insertCell(0)   //event type
+                var td1 = row.insertCell(1)   //time start
+                var td2 = row.insertCell(2)   //time end
+                var td3 = row.insertCell(3)   //possession player
+                var td4 = row.insertCell(4)   //possession team (A - B)
+                //var td5 = row.insertCell(5) //event_result
+
+                td3.style.textAlign = "center"
+                td2.style.textAlign = "center"
+                td1.style.textAlign = "center"
+                td4.style.textAlign = "right"
+                               
+                var node0 = document.createTextNode($('#name_event').val())
+                var node1 = document.createTextNode($("#time_event_start").val())
+                var node2 = document.createTextNode($("#time_event_end").val()) 
+
+                if($('#name_event').val()=="Duel"){
+                  var node3 = document.createElement("pre")
+                  var text = document.createTextNode("POS "+$("#possession_player_number").val()+"\n"+"REC "+$("#recovery_player_number").val()+"\n"+"WIN "+$("#winner_player_number").val())
+                  node3.appendChild(text)
+                }
+                else{
+                  var node3 = document.createTextNode($("#player_number").val())
+                }
+                
+                var node4 = document.createTextNode($("#active_team").val())
+                
+                // if we want add result of event in the row 
+                // var node5 = document.createTextNode($("#event_result").val())
+                // td5.appendChild(node5)
+
+                td0.appendChild(node0)
+                td1.appendChild(node1)
+                td2.appendChild(node2)
+                td3.appendChild(node3)
+                td4.appendChild(node4)
+                
+                if($("#event_result").val() == "SUCC"){
+                  row.style.backgroundColor = "lightgreen"
+                }
+                else{
+                  if($("#event_result").val() == "FAIL")
+                    row.style.backgroundColor = "LightCoral"
+                }
+
+                $("#current_event_number").val(current_event_number)
+
+          }                  
+        });  
+                     
+
+        $("#update-csv").click(function() {
+
+          var table_matrix = new Array()
+          $('#myTable tr').each(function(){
+              var row_list = ""
+              var firstLine = true
+              $(this).find('td').each(function(){
+                if (firstLine) {
+                  row_list += $(this).text()
+                  firstLine = false
+                }
+                else {
+                  row_list += ";" + $(this).text()
+                }
+              })
+              table_matrix.push(row_list)
+          })  
+          if(csv_is_new){
+            table_matrix.pop(-1)
+          }
+          
+          $.ajax({
+            type: "POST",
+            
+            data: JSON.stringify({table:table_matrix}),
+            url: "/{{match}}/update",
+            contentType: "application/json; charset=utf-8",
+            success: function(dat) { 
+              console.log(dat);
+            }
+          });
+
+          $.ajax({
+            url: '/{{match}}',
+            success: function() {
+                window.location.reload(scrollTo($('#current_event_number').val()));
+            }
+          });
 
          }); 
 
@@ -234,13 +593,13 @@
   <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-md-2">
+
       <span class="navbar-brand mb-2 mt-2 display2 ">Events Tagging Dashboard</span>
 
       <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" style="color:white"href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Matches
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -250,137 +609,179 @@
             </div>
           </li>
         </ul>
+      </div>
 
+      <div class="col-sm-4">
+        <h2 class="navbar-brand mb-2 mt-2 display2" style="color: white">{{ match_name }}</h2>
+      </div>
+      
+           
+      <div class="col-xs-5">
+        <div class="row border border-secondary rounded-top">
+          <div class="col-xs-3 my-auto">
+            <button type="button" class="btn btn-warning btn-md" id="update-csv"><i class="mdi mdi-file-upload mdi-lg"></i> Update CSV</button>
+          </div>
+          <div class="col-xs-8 text-center p-3">
+            <h4 class="text-right" style="color: white"><strong>Last Update: {{date_last_update}}</strong></h4> 
+          </div>
+        </div>
       </div>
     </nav>
 
-      <div class="container-fluid p-4 bg-light text-dark">
+        <div class="container-fluid p-2 bg-light text-dark">
 
-        <div class="row">
-          <div class="col-7">
-            <h2 class="text-center">{{ match_name }}</h2>
-          </div>
-          <div class="col-5">
-            <div class="row border border-secondary rounded-top">
-              <div class="col-md-3 p-3">
-                <button type="button" class="btn btn-warning btn-md" id="update-csv"><i class="mdi mdi-file-upload mdi-lg"></i> Update CSV</button>
-              </div>
-              <div class="col-md-8 text-center p-3">
-                <h4 class="text-dark"><strong>Last Update: {{date_last_update}}</strong></h4> 
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-
-          <video class="col-lg-7" src="{{ video_link }}" controls id="myVideo"></video>
-          <div class="mh-100 col-lg-5 border border-secondary rounded-bottom p-0" style="overflow-y:auto;" id="table_div">  
-            <table class="table table-scroll table-hover" id="myTable">
-              <thead class="thead-dark fixed_header">
-                <tr>
-                  {% for header_val in (data[0]) %}
-                    <th scope="col">{{header_val}}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-
-                {% set rows = [] %}
-                {% for row in (data[1:]) %}
-                  {% if rows|length < 1 %}
+          <!-- ROW WHIT VIDEO AND EVENT LIST -->
+          <div class="row">
+            <video class="col-lg-8" src="{{ video_link }}" controls id="myVideo"></video>
+            
+            <div class="mh-100 col-lg-4 border border-secondary rounded-bottom p-0" style="overflow-y:auto;" id="table_div">  
+              
+                <table class="table table-striped table-scroll table-condensed" id="myTable">
+                  <thead class="thead-dark fixed_header">
                     <tr>
-                      {% for val in (row) %}
-                        {% if (val != '0' and (loop.index0 == 2 or loop.index0 == 3)) %}
-                          <td>{{val}}</td>
-                        {% else %}
-                          <td>{{val}}</td>
-                        {% endif %}
-                      {% endfor %}
+                      <th scope="col">Event</th>
+                      <th scope="col" >Start</th>
+                      <th scope="col" >End</th>
+                      <th scope="col" >Player</th>
+                      <th scope="col" >Team</th>
                     </tr>
-                    {% if rows.append(1) %}{% endif %}
-                  {% else %}
-                    <tr>
-                      {% for val in (row) %}
-                        {% if (val != '0' and (loop.index0 == 2 or loop.index0 == 3)) %}
-                          <td>{{val}}</td>
-                        {% else %}
-                          <td>{{val}}</td>
-                        {% endif %}
-                      {% endfor %}
-                    </tr>
-                  {% endif %}
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-
-        <div class="row">
-          <div class="col-lg-7">
-
-            <div class="row border border-secondary rounded-top mt-3">
-              <div class="col p-3 text-center">
-                <button type="button" class="btn btn-dark btn-md btn-block" id="prev-frame"><i class="mdi mdi-skip-previous mdi-lg"></i></button>
-              </div>
-              <div class="col p-3 text-center">
-                <button type="button" class="btn btn-danger btn-md btn-block" id="start-pause"><i class="mdi mdi-play-arrow mdi-lg"></i></button>
-              </div>
-              <div class="col p-3 text-center">
-                <button type="button" class="btn btn-dark btn-md btn-block" id="next-frame"><i class="mdi mdi-skip-next mdi-lg"></i></button>
-              </div>
-            </div>
-
-          </div>
-          <div class="col-lg-5">
-            <div class="row">
-              <div class="col-md-4 p-3 text-center">
-                <div class="radio">
-                  <h4 class="text-dark"><strong>Events Type:</strong></h4>
-                </div>
-              </div>
-              <div class="col-2 p-3 text-center">
-                <div class="radio">
-                  <label><input type="radio" onclick="window.location='/{{match_code + '_Pass'}}';" name="optradio" id="pass-events" >Pass</label>
-                </div>
-              </div>
-              <div class="col-2 p-3 text-center">
-                <div class="radio">
-                  <label><input type="radio" onclick="window.location='/{{match_code + '_Shot'}}';" name="optradio" id="shot-events">Shot</label>
-                </div>
-              </div>
-              <div class="col-2 p-3 text-center">
-                <div class="radio">
-                  <label><input type="radio" onclick="window.location='/{{match_code + '_Goal'}}';" name="optradio" id="goal-events">Goal</label>
-                </div>
-              </div>
-
-            </div>
+                  </thead>
+                  <tbody>
+                      
+                  </tbody>
+                </table>               
+                 
+            </div>    
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-lg-7">
 
-            <div class="row pt-2 border border-secondary rounded-bottom">
-              <div class="col p-3 text-center">
-                <button type="button" class="btn btn-primary btn-md btn-block" id="event-start"> <i class="mdi mdi-watch-later mdi-lg"></i> Event Start</button>
+
+
+              <div class="row justify-content-md-center">
+                <!-- <button type="button" id="button_team_A" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamA">
+                  {{ name_team_A }}
+                </button> -->
+                
+                <div class="col-xs-3">
+                  <input class="text-center" type="text" id="name_event" value="Event">               
+                </div>
+                
+                
+                <div class="col-xs-3 offset-xs-1">
+                  <input class="text-center" type="number" id="time_event_start" value="0">
+                </div>
+                <div class="col-xs-3">
+                  <input class="text-center" type="number" id="time_event_end" value="0">  
+                </div>
+                <div class="col-xs-3">
+                  <input class="text-center" type="number" id="player_number">
+                </div>
+                <div class="col-xs-3">
+                  <input class="text-center" type="text" id="player_name" value="NOME DI PROVA">
+                </div>
+                <div class="col-xs-3 offset-xs-1">
+                  <input class="text-center" type="text" id="active_team" vlue = "A">
+                </div>
+                <div class="col-xs-3 offset-xs-1">
+                  <input class="text-right" type="text" id="current_event_number" vlue = "0">
+                </div>
+
+
+                <!-- <div class="col-xs-3 offset-sm-1">
+                  <button type="button" id="button_team_B" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamB">
+                    {{ name_team_B }}
+                  </button>
+                </div> -->
               </div>
-              <div class="col p-3 text-center">
-                <button type="button" class="btn btn-success btn-md btn-block" id="event-end"> <i class="mdi mdi-watch-later mdi-lg"></i> Event End</button>
+
+            <p></p>
+            
+            <div class="row justify-content-md-center">
+              
+              <div class="col-xs-3 offset-xs-1" id="possession_player" style="display:none">
+                <input class="text-center" type="text hidden" id="possession_player_number" vlue = "0">
               </div>
+              
+              <button type="button" class="btn btn-outline-dark" id="new-event">
+                <i class="material-icons">playlist_add</i>
+              </button>
+
+              <div class="col-xs-3 offset-xs-1" id="recovery_player" style="display:none">
+                <input class="text-center" type="text" id="recovery_player_number" vlue = "0">
+              </div>
+
+              <div class="col-xs-3 offset-xs-1" id="winner_player" style="display:none">
+                <input class="text-center" type="text" id="winner_player_number" vlue = "0">
+              </div>
+
+            </div> 
+            </div>          
+
+            <div class="col-xs-3 offset-xs-1" id="event_result" style="display:none">
+              
             </div>
           </div>
-
-          <div class="col-lg-5 float-right">
-            <input type="number" id="val-1" value="0">
-            <input type="number" id="val-2" value="0">
-            <button type="button" id="new-event">Add Event</button>
-          </div>
-
-          
         </div>
       </div>
+
+      <div class="container" id="test">
+        <ul id="first-ul"></ul>
+      </div>
+ 
+
+      
+
+      
+
+<!-- Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="showTeamB">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h3 class="modal-title w-100">{{ name_team_B }}</h3>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              {% for key, value in squad_B.items() %}
+                  <div class="row">
+                    <div class="col text-center">{{ key }}</div>  
+                    <div class="col text-center">{{ value | upper()}}</div>
+                  </div>
+              {% endfor %}
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" data-dismiss="modal" type="button">Close</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="showTeamA">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h3 class="modal-title w-100">{{ name_team_A }}</h3>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              {% for key, value in squad_A.items() %}
+                  <div class="row">
+                    <div class="col text-center">{{ key }}</div>  
+                    <div class="col text-center">{{ value | upper()}}</div>
+                  </div>
+              {% endfor %}
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" data-dismiss="modal" type="button">Close</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    
+
   </body>
 </html>
