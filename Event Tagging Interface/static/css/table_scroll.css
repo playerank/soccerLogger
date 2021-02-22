@@ -6,7 +6,7 @@
 .table-scroll tbody {
     position: absolute;
     overflow-y: scroll;
-    height: 470px;
+    
 }
 
 .table-scroll tr {
@@ -17,4 +17,9 @@
 
 .table-scroll thead > tr > th {
     border: none;
+    text-align: center;
+}
+
+.mio {
+    width: 20px;
 }
