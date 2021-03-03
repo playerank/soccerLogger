@@ -11,76 +11,153 @@
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="./static/gamecontroller.js-1.5.0/dist/gamecontroller.min.js"></script>
 
+    
     <script src="{{ url_for('static', filename='speech_recognition/SR.js') }}"></script>
     <script src="{{ url_for('static', filename='css_function/CSS.js') }}"></script>
 
+    <!-- graphic and draw system -->
     <script src="https://nightly.datatables.net/js/jquery.dataTables.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
+    <script src="{{ url_for('static', filename='gamedirection/direction.js') }}"></script>
     
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"> 
     <!-- link with all icons https://material.io/resources/icons/?style=baseline -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet"> 
+      
 
-    
-    
-    <!--- Inizio le modifiche per Speech Recogniction
-    la libreria usata è SpeechRecogniction che al momento delle modifiche 01/2021 impone l'uso di alcuni browser
-    PC - Chrome, Edge
-    Phone - WebView Android ChromeAndroid Samsung Internet
-    -->
-  
     <script> 
-      var event_success = false 
+
+      var event_success = false
+      let isGoal = false
+
+      //select extra tag for Pass
+      let count_extra_tag_key = 0
+      //select extra tag for Shot
+      let count_extra_tag_gool = 0
+
+      let win = ""
+      
+      let cordinateX = 200;
+      let cordinateY = 130;
+      let cordinateEndX = 200;
+      let cordinateEndY = 130;
+
+      let cordinateStartEventX = 0;
+      let cordinateStartEventY = 0;
+
+      let cordinateEndEventX = 0
+      let cordinateEndEventY = 0
+
+      let isActiveDraw = false
 
       gameControl
         .on('connect', gamepad => {
           var last_button = ''
           var last_event_button = ''
-          var current_event_page = 0
-          var counter = 0
-          let tableData = {}
-
+          
+          let active_save_event = false
+          //for change element re-speech recogniction
           let count_duel_press = 0
+          //1 when save event is active
           let double_press = 0
           
 
-//add new event to the list
+//add new event
           gamepad.after('button13', () => {
             
-            
-            if (last_button != 'button13' && double_press == 1 && event_success) {
+            if (last_button != 'button13' && double_press == 1 && active_save_event) {
               
               $('#new-event').trigger("click")
-              last_button = 'button13'
+
               window.setTimeout(function(){last_button=''}, 300)
               var current_event_number = $('#myTable tr').length
               document.getElementById('table_div').scrollTop += (current_event_number * 49);
+              
+              var vid = document.getElementById("myVideo");
+              vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.5);
+              vid.play()
               double_press = 0
+              last_button = 'button13'
             }
             else{
               double_press += 1
             }
           });   
-          
-
 
 //event PASS - PASSAGGIO
+          //when I press the button
           gamepad.before('button0', () => {
 
+            //set base interface
             set_color_row(this, "white")
+            event_success = false
             double_press = 0
-            //when I press the button
+            active_save_event = false
             if($("#possession_player").is(":visible") == true){
               $("#possession_player").hide()
               $("#recovery_player").hide()
             }
             
-              
+            var vid = document.getElementById("myVideo");
             if (last_button != 'button0') {
               
-              
               $('#name_event').val("Pass") 
+              
+              var time_start = (Math.round( vid.currentTime * 100) / 100)
+              $("#time_event_start").val(time_start)
+
+              
+            }
+            else{
+              
+              if( $('#time_event_start').val() < $('#time_event_end').val() ){
+                //invert, becouse is a new pass
+                temp = $('#time_event_start').val()
+                $('#time_event_start').val($('#time_event_end').val())
+                $('#time_event_end').val(temp)
+              }
+
+            }
+            vid.play()
+          })
+          //when I release the button
+            .after('button0', () => {
+            
               var vid = document.getElementById("myVideo");
+              vid.pause();
+              
+              var time_end = (Math.round( vid.currentTime * 100) / 100)
+              time_start = $("#time_event_start").val()
+              if(time_end < time_start){
+                $("#time_event_start").val(time_end)
+                time_end = time_start
+              }
+              $("#time_event_end").val(time_end)
+              number = speech(this, "player_number") 
+              
+              event_success = true
+            
+
+              last_button = 'button0'   
+            });
+
+//event CROOS - ASSIST
+          //when I press the button
+          gamepad.before('button1', () => {
+
+            //set base interface
+            set_color_row(this, "white")
+            event_success = false
+            double_press = 0
+            active_save_event = false
+            if($("#possession_player").is(":visible") == true){
+              $("#possession_player").hide()
+              $("#recovery_player").hide()
+            }
+              
+            var vid = document.getElementById("myVideo");
+            if (last_button != 'button1') {
+              
+              $('#name_event').val("Cross") 
               
               var time_start = (Math.round( vid.currentTime * 100) / 100)
               $("#time_event_start").val(time_start)
@@ -92,94 +169,46 @@
                 $('#time_event_start').val($('#time_event_end').val())
                 $('#time_event_end').val(temp)
               }
-
-              var vid = document.getElementById("myVideo");
-              vid.play()
             }
-          })
-          //when I release the button
-          .after('button0', () => {
-            
-              var vid = document.getElementById("myVideo");
-              vid.pause();
-              var time_end = (Math.round( vid.currentTime * 100) / 100)
-              time_start = $("#time_event_start").val()
-              if(time_end < time_start){
-                $("#time_event_start").val(time_end)
-                time_end = time_start
-              }
-              $("#time_event_end").val(time_end)
-
-              number = speech()  
-
-              event_success = true
-
-              last_button = 'button0'   
-          });
-
-//event CROOS - ASSIST
-          gamepad.before('button1', () => {
-
-            double_press = 0
-            set_color_row(this, "white")
-            //when I press the button
-            if($("#possession_player").is(":visible") == true){
-                $("#possession_player").hide()
-                $("#recovery_player").hide()
-              }
-                
-              if (last_button != 'button1') {
-                
-                
-                $('#name_event').val("Cross") 
-                var vid = document.getElementById("myVideo");
-                
-                var time_start = (Math.round( vid.currentTime * 100) / 100)
-                $("#time_event_start").val(time_start)
-              }
-              else{
-                if( $('#time_event_start').val() < $('#time_event_end').val() ){
-                  //invert, becouse is a new pass
-                  temp = $('#time_event_start').val()
-                  $('#time_event_start').val($('#time_event_end').val())
-                  $('#time_event_end').val(temp)
-                }
-
-                var vid = document.getElementById("myVideo");
-                vid.play()
-              }
+            vid.play()
           })
           //when I release the button
           .after('button1', () => {
+
             
-              var vid = document.getElementById("myVideo");
-              vid.pause();
-              var time_end = (Math.round( vid.currentTime * 100) / 100)
-              time_start = $("#time_event_start").val()
-              if(time_end < time_start){
-                $("#time_event_start").val(time_end)
-                time_end = time_start
-              }
-              $("#time_event_end").val(time_end)
+            var vid = document.getElementById("myVideo");
+            vid.pause();
+            
+            var time_end = (Math.round( vid.currentTime * 100) / 100)
+            time_start = $("#time_event_start").val()
+            if(time_end < time_start){
+              $("#time_event_start").val(time_end)
+              time_end = time_start
+            }
+            $("#time_event_end").val(time_end)
+            number = speech(this, "player_number") 
+            
+            event_success = true
+          
 
-              number = speech()  
-
-              last_button = 'button1'   
+            last_button = 'button1'   
           });
 
-
-
 //event SHOT - TIRO
+          //when I press the button
           gamepad.before('button2', () => {
 
-            double_press = 0
             set_color_row(this, "white")
-              //when I press the button
+            event_success = false
+            double_press = 0
+            active_save_event = false
+            
             if($("#possession_player").is(":visible") == true){
               $("#possession_player").hide()
               $("#recovery_player").hide()
             }
-            
+
+            var vid = document.getElementById("myVideo");
             if (last_button != 'button2') {
               
               
@@ -188,6 +217,7 @@
               
               var time_start = (Math.round( vid.currentTime * 100) / 100)
               $("#time_event_start").val(time_start)
+
             }
             else{
               if( $('#time_event_start').val() < $('#time_event_end').val() ){
@@ -197,15 +227,18 @@
                 $('#time_event_end').val(temp)
               }
 
-              var vid = document.getElementById("myVideo");
-              vid.play()
+              
             }
+            vid.play()
+
           })
           //when I release the button
           .after('button2', () => {
-            
+
+              
               var vid = document.getElementById("myVideo");
               vid.pause();
+
               var time_end = (Math.round( vid.currentTime * 100) / 100)
               time_start = $("#time_event_start").val()
               if(time_end < time_start){
@@ -213,139 +246,87 @@
                 time_end = time_start
               }
               $("#time_event_end").val(time_end)
-
-              number = speech()  
-
+              number = speech(this, "player_number") 
+              
               event_success = true
-
+            
               last_button = 'button2'   
           });
 
-//event KEY PASS - PASSAGGIO FILTRANTE
+//Null but i think use for move whit ball
           gamepad.before('button3', () => {
 
-            double_press = 0
-            set_color_row(this, "white")
-            //when I press the button
-            if($("#possession_player").is(":visible") == true){
-              $("#possession_player").hide()
-              $("#recovery_player").hide()
-            }
             
-              
-            if (last_button != 'button3') {
-
-              $('#name_event').val("Key Pass") 
-              var vid = document.getElementById("myVideo");
-              
-              var time_start = (Math.round( vid.currentTime * 100) / 100)
-              $("#time_event_start").val(time_start)
-            }
-            else{
-              if( $('#time_event_start').val() < $('#time_event_end').val() ){
-                //invert, becouse is a new pass
-                temp = $('#time_event_start').val()
-                $('#time_event_start').val($('#time_event_end').val())
-                $('#time_event_end').val(temp)
-              }
-
-              var vid = document.getElementById("myVideo");
-              vid.play()
-            }
-          })
-          //when I release the button
-          .after('button3', () => {
-            
-              var vid = document.getElementById("myVideo");
-              vid.pause();
-              var time_end = (Math.round( vid.currentTime * 100) / 100)
-              time_start = $("#time_event_start").val()
-              if(time_end < time_start){
-                $("#time_event_start").val(time_end)
-                time_end = time_start
-              }
-              $("#time_event_end").val(time_end)
-
-              number = speech()  
-              
-              event_success = true
-              
-              last_button = 'button3'   
-          });
+            });
 
 //event DUEL
 //the duel is divide in 4 ste
-//step 0 : indicate event = Duel
-//step 1 : speech possession_player
-//step 2 : speech recovery_player
-//step 3 : press -> start video
-//         release -> stop video + speach win_player
+//step 1 : active play video 
+//         release -> stop video + speach posession player
+//step 2 : recovery player number
+//step 3 : winner player number    
           gamepad.before('button5', () => {
 
+            active_save_event = false
             double_press = 0
             set_color_row(this, "white")
-
-
-            console.log(count_duel_press)
-            $("#possession_player").show()
-            $("#recovery_player").show()
-
-              //when I press the button
-            if (last_button != 'button5') {
               
-              $('#name_event').val("Duel") 
-              var vid = document.getElementById("myVideo");
-              
-              var time_start = (Math.round( vid.currentTime * 100) / 100)
-              $("#time_event_start").val(time_start)
-              last_button = 'button5'
-            }
-            else{
-              switch (count_duel_press){
-                case 1:
-                  document.getElementById('possession_player_number').style.backgroundColor = 'aquamarine' ;
-                  $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
-
-                  break;
-                case 2:
-                  document.getElementById('recovery_player_number').style.backgroundColor = 'aquamarine' ;
-                  $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
-
-                  break;
-                case 3:
-                  var vid = document.getElementById("myVideo");
-
-                  vid.play()
-                  break;
-              }
-                
+            $('#name_event').val("Duel") 
+            var vid = document.getElementById("myVideo");
             
-          }
+            var time_start = (Math.round( vid.currentTime * 100) / 100)
+            $("#time_event_start").val(time_start)
+            last_button = 'button5'
+            
+            
+            switch (count_duel_press){
+              case 0:
+                vid.play()
+      
+                break
+              case 1:
+                $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
 
+                break;
+              case 2:
+      
+                win = $("#winner_player").val( speech_duel(this, "winner_player"))
+                event_success = true
+                active_save_event = true
+                
+                break;
+            }
+                
           count_duel_press += 1
           })
           .after('button5', () => {
-            if(count_duel_press == 4){
-              var vid = document.getElementById("myVideo");
-              vid.pause()
 
-              var time_end = (Math.round( vid.currentTime * 100) / 100)
-              time_start = $("#time_event_start").val()
-              if(time_end < time_start){
-                $("#time_event_start").val(time_end)
-                time_end = time_start
-              }
-              $("#time_event_end").val(time_end)
+            console.log(count_duel_press)
+            switch(count_duel_press){
+              case 1:
+                var vid = document.getElementById("myVideo");
+                vid.pause()
 
-              $("#winner_player").val( speech_duel(this, "winner_player"))
+                var time_end = (Math.round( vid.currentTime * 100) / 100)
+                time_start = $("#time_event_start").val()
+                if(time_end < time_start){
+                  $("#time_event_start").val(time_end)
+                  time_end = time_start
+                }
+                $("#time_event_end").val(time_end)
+                $("#possession_player").show()
 
-              event_success = true
+                $("#recovery_player").show()
+                $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
 
-              count_duel_press = 0
+                break
+              case 3: 
+                count_duel_press = 0
+                break
             }
+          
             
           });
-
 
 //go to the previous frame
           gamepad.on('button6', () => {
@@ -363,17 +344,70 @@
             vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.04);
           });
           
-//show/hiden team A
-          gamepad.on('button10',     () => { 
+//show/hiden team A and B, change with active_team
+          gamepad.on('button8',     () => { 
                     double_press = 0
-                    $('#showTeamA').modal('show'); })
-                 .after('button10',  () => { $('#showTeamA').modal('hide');});
+                    team_active = "#showTeam" + $('#active_team').val() 
+                    $(team_active).modal('show'); 
+                  })
+                 .after('button8',  () => { 
+                    team_active = "#showTeam" + $('#active_team').val()
+                    $(team_active).modal('hide');
+                  });
 
-//show/hiden team B
-          gamepad.on('button11',     () => { 
-                    double_press = 0
-                    $('#showTeamB').modal('show'); })
-                 .after('button11',  () => { $('#showTeamB').modal('hide');});
+//event GAME STOP - gioco fermo
+          //when I press the button
+          gamepad.on('button9',     () => { 
+            
+            set_color_row(this, "white")
+            double_press = 0
+            active_save_event = false
+            if($("#possession_player").is(":visible") == true){
+              $("#possession_player").hide()
+              $("#recovery_player").hide()
+            }
+
+            var vid = document.getElementById("myVideo");
+            if (last_button != 'button9') {
+                         
+              $('#name_event').val("Rest") 
+              var vid = document.getElementById("myVideo");
+              
+              var time_start = (Math.round( vid.currentTime * 100) / 100)
+              $("#time_event_start").val(time_start)
+            }
+            else{
+              if( $('#time_event_start').val() < $('#time_event_end').val() ){
+                //invert, becouse is a new pass
+                temp = $('#time_event_start').val()
+                $('#time_event_start').val($('#time_event_end').val())
+                $('#time_event_end').val(temp)
+              }
+            }
+            vid.play()
+          })
+          //when I release the button
+            .after('button9', () => {
+
+              
+              var vid = document.getElementById("myVideo");
+              vid.pause();
+
+              var time_end = (Math.round( vid.currentTime * 100) / 100)
+              time_start = $("#time_event_start").val()
+              if(time_end < time_start){
+                $("#time_event_start").val(time_end)
+                time_end = time_start
+              }
+              $("#time_event_end").val(time_end)
+                  
+              set_color_row(this,"white")
+              active_save_event = true
+
+              event_success = true
+            
+              last_button = 'button9'   
+            });
 
 //change the active team
           gamepad.on('button4',     () => { double_press = 0  })
@@ -381,37 +415,162 @@
 
 //event fail
           gamepad.after('button14', () => { 
-              if(event_success){
+              if(event_success && $("#name_event").val() != "Rest"){
+                isGoal = false
                 double_press = 0
                 
                 set_color_row(this, "LightCoral")
 
                 console.log("evento fallito")
                 event_result = "FAIL"
+
                 $("#event_result").val("FAIL")
+                active_save_event = true
               }
-              
           });
 
 //event success
           gamepad.after('button15', () => { 
-              if(event_success){
+              if(event_success && $("#name_event").val() != "Rest"){
+                isGoal = false
                 double_press = 0
 
                 set_color_row(this, "lightgreen")
 
                 console.log("evento ok")
                 event_result = "SUC"
-                console.log(event_result)
+                
                 $("#event_result").val("SUCC")
+                active_save_event = true
               }
           });
-  
-  
+             
+
+//TAG SHOT -> Goal       Pass -> Key Pass 
+          gamepad.after('button12', () => { 
+              
+              switch ($('#name_event').val()){
+                //GOOL
+                case "Shot":
+                  if(!count_extra_tag_gool){
+                    set_color_row(this, "lawngreen")
+                    
+                    $('#extra_tag').val("Gool")
+
+                    console.log("GOOOOOOOOOL")
+                    $("#event_result").val("SUCC")
+                    isGoal = true
+                    count_extra_tag_gool += 1
+                    active_save_event = true
+                  }
+                  else{
+                    set_color_row(this, "white")
+
+                    $('#extra_tag').val("")
+
+                    $("#event_result").val("FAIL")
+                    isGoal = false
+                    count_extra_tag_gool -= 1
+                    active_save_event = false
+                  }
+                  break
+                //KEY PASS
+                case "Pass":
+                  if(!count_extra_tag_key){              
+                    $('#extra_tag').val("Key Pass")
+
+                    count_extra_tag_key += 1                    
+                  }
+                  else{
+                    $('#extra_tag').val("")
+
+                    count_extra_tag_key -= 1
+                  }
+                  break
+                  
+              }
+              
+          });
+
+//draw arrow up
+          gamepad.before('up0',     () => {
+                    isActiveDraw=true })
+            .on('up0',     () => {
+                    cordinateEndY -= 1  })
+            .after('up0',     () => {
+                    isActiveDraw=false });
+          
+//draw arrow down
+          gamepad.before('down0',     () => {
+                    isActiveDraw=true })
+            .on('down0',     () => {
+                    cordinateEndY += 1  })
+            .after('down0',     () => {
+                    isActiveDraw=false });
+//draw arrow right
+          gamepad.before('right0',     () => {
+                    isActiveDraw=true })
+            .on('right0',     () => {
+                    cordinateEndX += 1  })
+            .after('right0',     () => {
+                    isActiveDraw=false });
+//draw arrow left
+          gamepad.before('left0',     () => {
+                    isActiveDraw=true })
+            .on('left0',     () => {
+                    cordinateEndX -= 1  })
+            .after('left0',     () => {
+                    isActiveDraw=false });
+
+//start position event
+          gamepad.before('button10', () => {
+            cordinateStartEventX = cordinateEndX
+            cordinateStartEventY = cordinateEndY
+            last_button = 'button10'
+          });
+
+//end position event
+          gamepad.before('button11', () => {
+            if(last_button == 'button10'){
+              cordinateEndEventX = cordinateEndX
+              cordinateEndEventY = cordinateEndY
+
+              //set direction 
+              console.log(cordinateStartEventX + " " + cordinateStartEventY + " " + cordinateEndEventX + " " + cordinateEndEventY)
+              
+              setDirectionEvent(cordinateStartEventX,cordinateStartEventY , cordinateEndEventX,cordinateEndEventY)
+            }
+            else{
+              if($('#name_event').val() != "Duel"){
+                $("#player_number").val( speech_duel(this,"player_number"))
+              }else{
+                console.log(count_duel_press)
+                count_duel_press -= 1
+                switch (count_duel_press){
+                  case 0:
+                    $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
+                    count_duel_press += 1
+                    break;
+                  case 1:
+                    $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
+                    count_duel_press += 1
+                    break;
+                  case -1:
+                    win = $("#winner_player").val( speech_duel(this,"winner_player"))
+                    count_duel_press += 1
+                    active_save_event = true
+                    break;
+                }
+                
+              }
+
+            }
+          
+          });
+
       });
+
     </script>
-
-
  
     <script type="text/javascript">
       jQuery(document).ready(function() {
@@ -437,6 +596,7 @@
         });
 
 
+    //create the obj table
         $('#myTable').DataTable( {
           scrollX: false,
                   
@@ -453,9 +613,7 @@
             zeroRecords: null,
             /*searchPanes: {
               emptyPanes: null
-            }*/
-            
-                            
+            }*/                            
           },
         
           select: 'single',   
@@ -475,6 +633,7 @@
           csv_is_new = false
         }
         
+      //insert new event
         $("#new-event").click(function() {
 
           console.log(event_result)
@@ -499,12 +658,13 @@
                 var td2 = row.insertCell(2)   //time end
                 var td3 = row.insertCell(3)   //possession player
                 var td4 = row.insertCell(4)   //possession team (A - B)
-                //var td5 = row.insertCell(5) //event_result
+                var td5 = row.insertCell(5)   //extra_tag
 
-                td3.style.textAlign = "center"
-                td2.style.textAlign = "center"
                 td1.style.textAlign = "center"
-                td4.style.textAlign = "right"
+                td2.style.textAlign = "center"
+                td3.style.textAlign = "center"
+                td4.style.textAlign = "center"
+                td5.style.textAlign = "right"
                                
                 var node0 = document.createTextNode($('#name_event').val())
                 var node1 = document.createTextNode($("#time_event_start").val())
@@ -520,6 +680,7 @@
                 }
                 
                 var node4 = document.createTextNode($("#active_team").val())
+                var node5 = document.createTextNode($("#extra_tag").val())
                 
                 // if we want add result of event in the row 
                 // var node5 = document.createTextNode($("#event_result").val())
@@ -530,17 +691,26 @@
                 td2.appendChild(node2)
                 td3.appendChild(node3)
                 td4.appendChild(node4)
-                
-                if($("#event_result").val() == "SUCC"){
-                  row.style.backgroundColor = "lightgreen"
-                }
-                else{
-                  if($("#event_result").val() == "FAIL")
-                    row.style.backgroundColor = "LightCoral"
-                }
+                td5.appendChild(node5)
 
+                //Select ideal color to add in list
+                if(isGoal){
+                  row.style.backgroundColor = "lime"
+                }else{
+                  if($("#name_event").val() == "Rest"){
+                    row.style.backgroundColor = "white"
+                  }
+                  else{
+                    if($("#event_result").val() == "FAIL"){
+                        row.style.backgroundColor = "LightCoral"
+                    }
+                    else{
+                      if($("#event_result").val() == "SUCC")
+                        row.style.backgroundColor = "lightgreen"
+                    }
+                  }
+                }
                 $("#current_event_number").val(current_event_number)
-
           }                  
         });  
                      
@@ -628,111 +798,165 @@
       </div>
     </nav>
 
-        <div class="container-fluid p-2 bg-light text-dark">
+    <div class="container-fluid p-2 bg-light text-dark">
 
-          <!-- ROW WHIT VIDEO AND EVENT LIST -->
-          <div class="row">
-            <video class="col-lg-8" src="{{ video_link }}" controls id="myVideo"></video>
+      <!-- ROW WHIT VIDEO AND EVENT LIST -->
+      <div class="row" >
+        <video class="col-lg-8" src="{{ video_link }}" controls id="myVideo"></video>
+        
+        <div class="mh-100 col-lg-4 border border-secondary rounded-bottom p-0" style="overflow-y:auto;" id="table_div">  
+          
+            <table class="table table-striped table-scroll table-condensed" id="myTable">
+              <thead class="thead-dark fixed_header">
+                <tr>
+                  <th scope="col">Event</th>
+                  <th scope="col" >Start</th>
+                  <th scope="col" >End</th>
+                  <th scope="col" >Player</th>
+                  <th scope="col" >Team</th>
+                  <th scope="col" >Tag</th>
+                </tr>
+              </thead>
+              <tbody>
+                  
+              </tbody>
+            </table>               
+              
             
-            <div class="mh-100 col-lg-4 border border-secondary rounded-bottom p-0" style="overflow-y:auto;" id="table_div">  
-              
-                <table class="table table-striped table-scroll table-condensed" id="myTable">
-                  <thead class="thead-dark fixed_header">
-                    <tr>
-                      <th scope="col">Event</th>
-                      <th scope="col" >Start</th>
-                      <th scope="col" >End</th>
-                      <th scope="col" >Player</th>
-                      <th scope="col" >Team</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      
-                  </tbody>
-                </table>               
-                 
-            </div>    
-          </div>
-        </div>
+        </div>   
+      </div>
+    </div>
 
+    <!-- ROW WHIT ALL CELL -->
+    <div class="row justify-content-md-center">
+      <!-- <button type="button" id="button_team_A" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamA">
+        {{ name_team_A }}
+      </button> -->
 
-
-
-              <div class="row justify-content-md-center">
-                <!-- <button type="button" id="button_team_A" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamA">
-                  {{ name_team_A }}
-                </button> -->
-                
-                <div class="col-xs-3">
-                  <input class="text-center" type="text" id="name_event" value="Event">               
-                </div>
-                
-                
-                <div class="col-xs-3 offset-xs-1">
-                  <input class="text-center" type="number" id="time_event_start" value="0">
-                </div>
-                <div class="col-xs-3">
-                  <input class="text-center" type="number" id="time_event_end" value="0">  
-                </div>
-                <div class="col-xs-3">
-                  <input class="text-center" type="number" id="player_number">
-                </div>
-                <div class="col-xs-3">
-                  <input class="text-center" type="text" id="player_name" value="NOME DI PROVA">
-                </div>
-                <div class="col-xs-3 offset-xs-1">
-                  <input class="text-center" type="text" id="active_team" vlue = "A">
-                </div>
-                <div class="col-xs-3 offset-xs-1">
-                  <input class="text-right" type="text" id="current_event_number" vlue = "0">
-                </div>
-
-
-                <!-- <div class="col-xs-3 offset-sm-1">
-                  <button type="button" id="button_team_B" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamB">
-                    {{ name_team_B }}
-                  </button>
-                </div> -->
-              </div>
-
-            <p></p>
-            
-            <div class="row justify-content-md-center">
-              
-              <div class="col-xs-3 offset-xs-1" id="possession_player" style="display:none">
-                <input class="text-center" type="text hidden" id="possession_player_number" vlue = "0">
-              </div>
-              
-              <button type="button" class="btn btn-outline-dark" id="new-event">
-                <i class="material-icons">playlist_add</i>
-              </button>
-
-              <div class="col-xs-3 offset-xs-1" id="recovery_player" style="display:none">
-                <input class="text-center" type="text" id="recovery_player_number" vlue = "0">
-              </div>
-
-              <div class="col-xs-3 offset-xs-1" id="winner_player" style="display:none">
-                <input class="text-center" type="text" id="winner_player_number" vlue = "0">
-              </div>
-
-            </div> 
-            </div>          
-
-            <div class="col-xs-3 offset-xs-1" id="event_result" style="display:none">
-              
-            </div>
-          </div>
-        </div>
+      <div class="col-xs-3"></div>
+      
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 200px;" >
+        Tipo               
+      </div>
+      
+      
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+        Start Time               
+      </div>
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+        End Time              
+      </div>
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+        Player Shirt               
+      </div>
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+        Player Name               
+      </div>
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+        Team               
+      </div>
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 200px;">
+        # Events            
+      </div>
+      <div class="col-xs-3 bg-dark text-white text-center" style="width: 200px;">
+        Extra Tag            
       </div>
 
-      <div class="container" id="test">
-        <ul id="first-ul"></ul>
+
+      <!-- <div class="col-xs-3 offset-sm-1">
+        <button type="button" id="button_team_B" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamB">
+          {{ name_team_B }}
+        </button>
+      </div> -->
+    </div>
+
+    <div class="row justify-content-md-center">
+      <!-- <button type="button" id="button_team_A" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamA">
+        {{ name_team_A }}
+      </button> -->
+      
+      <div class="col-xs-3">
+        <input class="text-center" type="text" id="name_event" value="Event">               
       </div>
- 
+      
+      
+      <div class="col-xs-3 offset-xs-1">
+        <input class="text-center" type="number" id="time_event_start" value="0">
+      </div>
+      <div class="col-xs-3">
+        <input class="text-center" type="number" id="time_event_end" value="0">  
+      </div>
+      <div class="col-xs-3">
+        <input class="text-center" type="number" id="player_number">
+      </div>
+      <div class="col-xs-3">
+        <input class="text-center" type="text" id="player_name" value="NOME DI PROVA">
+      </div>
+      <div class="col-xs-3 offset-xs-1">
+        <input class="text-center" type="text" id="active_team" value = "A">
+      </div>
+      <div class="col-xs-3 offset-xs-1">
+        <input class="text-right" type="text" id="current_event_number" vlue = "0">
+      </div>
+      <div class="col-xs-3 offset-xs-1">
+        <input class="text-right" type="text" id="extra_tag" vlue = "">
+      </div>
+
+
+      <!-- <div class="col-xs-3 offset-sm-1">
+        <button type="button" id="button_team_B" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showTeamB">
+          {{ name_team_B }}
+        </button>
+      </div> -->
+    </div>
+
+    <p></p>
+    
+    <div class="row justify-content-md-center">
+      
+      <div class="col-xs-3 offset-xs-1" id="possession_player" style="display:none">
+        <input class="text-center" type="text hidden" id="possession_player_number" vlue = "0">
+      </div>
+      
+      <button type="button" class="btn btn-outline-dark" id="new-event">
+        <i class="material-icons">playlist_add</i>
+      </button>
+
+      <div class="col-xs-3 offset-xs-1" id="recovery_player" style="display:none">
+        <input class="text-center" type="text" id="recovery_player_number" vlue = "0">
+      </div>
+
+      <div class="col-xs-3 offset-xs-1" id="winner_player" style="display:none">
+        <input class="text-center" type="text" id="winner_player_number" vlue = "0">
+      </div>
+
+    </div> 
+                     
+
+    <div class="col-xs-3 offset-xs-1" id="event_result" style="display:none"></div>
+          
+
+    <div class="container" id="test">
+      <ul id="first-ul"></ul>
+    </div>    
 
       
-
+        
+    <script src="{{ url_for('static', filename='gamedirection/sketch.js') }}"></script>
       
+
+    <style>
+      .modal-dialog {
+          position: fixed;
+          margin: auto;
+          width: 500px;
+          height: 100%;
+          left: 10px;
+      }
+      .modal-content {
+          height: 100%;
+      }
+    </style>
 
 <!-- Modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="showTeamB">
@@ -758,10 +982,9 @@
       </div>
     </div>
 
-
     <div class="modal fade" tabindex="-1" role="dialog" id="showTeamA">
       <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
+        <div class="modal-content right">
           <div class="modal-header text-center">
             <h3 class="modal-title w-100">{{ name_team_A }}</h3>
           </div>
