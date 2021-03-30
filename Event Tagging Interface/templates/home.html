@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   
+
+    <link rel="stylesheet" href="css/custom.css" >
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/custom-style.css" >
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet">
+
+    <title>Document</title>
+    <style>
+        body{
+            background-color: black;
+            background-image: url("static/images/im4.png");
+
+           
+
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover
+            
+        }
+
+        #form1{
+            position : absolute;
+
+            top: 50px;
+            left : 50px;
+            
+            font-size: 25px;
+        }
+        #inputGroupFile1{
+            width: 460px;
+        }
+
+        #form2{
+            position : absolute;
+
+            top: 130px;
+            left : 50px;
+            
+            font-size: 25px;
+        }
+        #button3{
+            position : absolute;
+
+            height: 100px;
+            width: 100px;
+            
+            bottom: 30px;
+            right : 100px;
+
+            background-color: rgb(49, 49, 49);   
+        }
+        #icon{
+            position: absolute;
+
+            top: 0px;
+            left: 0px;
+            color: white; 
+            font-size: 100px
+        }
+        
+    </style>
+</head>
+<body>   
+
+
+    <form method=post action="/" enctype=multipart/form-data id="form1">
+        <div class="form-group">
+            <div class="input-group-append">
+                <input type="file" class="form-control-file" name=file id="inputGroupFile1" style="background-color: white;">
+            
+            </div>
+        </div>
+    
+    
+        <div class="form-group">
+            <div class="input-group-append">
+                <input type="file" class="form-control-file" name=file id="inputGroupFile1" style="background-color: white;" multiple>
+            
+                <input type=submit value="Upload Video" style="background-color:rgb(49, 49, 49); color: white;" >
+            </div>
+        </div>
+    </form>
+
+    <form method=post action="/" enctype=multipart/form-data id="form3">
+        <button type="submit" form="form3" class="button" id="button3">
+            <span class="material-icons" id="icon">play_arrow</span>        
+        </button>
+    </form>
+
+</body>
+</html>
+
