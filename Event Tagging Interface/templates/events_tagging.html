@@ -422,14 +422,25 @@
 
 //show/hiden team A and B, change with active_team
           gamepad.on('button8',     () => {
-                    double_press = 0
-                    team_active = "#showTeam" + $('#active_team').val()
-                    $(team_active).modal('show');
-                  })
-                 .after('button8',  () => {
-                    team_active = "#showTeam" + $('#active_team').val()
-                    $(team_active).modal('hide');
-                  });
+              double_press = 0
+              
+              if($('#active_team').val() == '{{name_team_A}}'){
+                team_active = "#showTeamA"
+              }
+              else{
+                team_active = '#showTeamB'
+              }
+              $(team_active).modal('show');
+            })
+            .after('button8',  () => {
+              if($('#active_team').val() == '{{name_team_A}}' ){
+                team_active = "#showTeamA"
+              }
+              else{
+                team_active = '#showTeamB'
+              }
+              $(team_active).modal('hide');
+            });
 
 //event GAME STOP - gioco fermo
           gamepad.before('button9',     () => {
@@ -1122,11 +1133,11 @@
     </style> -->
 
 <!-- Modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="showTeamB">
+    <div class="modal fade" tabindex="-1" role="dialog" id="showTeamA">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">
-            <h3 class="modal-title w-100">{{ name_team_B }}</h3>
+            <h3 class="modal-title w-100">{{ name_team_A }}</h3>
           </div>
           <div class="modal-body">
             <div class="container-fluid">
@@ -1142,11 +1153,11 @@
       </div>
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="showTeamA">
+    <div class="modal fade" tabindex="-1" role="dialog" id="showTeamB">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content right">
           <div class="modal-header text-center">
-            <h3 class="modal-title w-100">{{ name_team_A }}</h3>
+            <h3 class="modal-title w-100">{{ name_team_B }}</h3>
           </div>
           <div class="modal-body">
             <div class="container-fluid">
