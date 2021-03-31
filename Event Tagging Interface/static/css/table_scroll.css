@@ -4,6 +4,7 @@
 }
 
 .table-scroll tbody {
+    max-height: 48%;
     position: absolute;
     overflow-y: scroll;
     
@@ -11,6 +12,7 @@
 
 .table-scroll tr {
     width: 100%;
+    
     table-layout: fixed;
     display: inline-table;
 }
@@ -22,4 +24,16 @@
 
 .mio {
     width: 20px;
+}
+body{
+    background-color: black;
+    background-image: url("static/images/im4.png");
+
+   
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover
+    
 }
