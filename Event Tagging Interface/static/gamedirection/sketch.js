@@ -33,15 +33,16 @@ function setup(){
    
   canvas.position(pos_x , pos_y)
   
+  
   resetSketch();
 }
 
 function draw() {
-  
+
   pos_y = document.getElementById("myVideo").getBoundingClientRect().height/2 + document.getElementById("myVideo").getBoundingClientRect().top + document.getElementById("table_container").getBoundingClientRect().height
   pos_x = document.getElementById("myTable").getBoundingClientRect().left
 
-  width_image =document.getElementById("myTable").getBoundingClientRect().width
+  width_image = document.getElementById("myTable").getBoundingClientRect().width
   height_image = document.getElementById("cells_row").getBoundingClientRect().top - pos_y 
 
   image(field, 0, 0, width_image, height_image);
@@ -51,10 +52,8 @@ function draw() {
   
   if(isActiveDraw){
     strokeWeight(10);
-    pg.line(cordinateX, cordinateY, cordinateEndX, cordinateEndY);
-    
-    console.log(width_image)
-    console.log(height_image)
+    pg.fill(255,0,255)
+    temp = pg.line(cordinateX, cordinateY, cordinateEndX, cordinateEndY);
 
     cordinateX = cordinateEndX 
     cordinateY = cordinateEndY
@@ -64,6 +63,7 @@ function draw() {
   
   if(resetDraw){
     strokeWeight(10);
+    
     pg.line(cordinateX, cordinateY, cordinateEndX, cordinateEndY);
     cordinateX = cordinateEndX 
     cordinateY = cordinateEndY 
@@ -85,9 +85,16 @@ function resetSketch(){
   
 
   pg = createGraphics(x,y);
-  pg.fill(255);
-  
-
-  
+   
+  if(start_position){
+    pg.fill(0,255,0);
+  }  else{
+      if(end_position){
+        pg.fill(255,0,0);
+      }
+      else{
+        pg.fill(255);
+      }
+  } 
   pg.ellipse(cordinateX, cordinateY, 10)
 }

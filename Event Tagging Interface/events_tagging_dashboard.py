@@ -1,15 +1,13 @@
 import os
 import json
 import pandas as pd
-import team
 
 from flask import Flask, request, redirect, url_for, render_template, jsonify, Request
-
-from last_file_update import last_modified_fileinfo
 
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 '''
@@ -65,12 +63,12 @@ def upload_file():
 					try:
 						file_json = 'static/game/match/match.json'
 						data = json.load(open(file_json))
-						name_match = data["home_team"]["team_id"] + "_" +  data["away_team"]["team_id"]
+						name_match = data["home_team"]["team_id"] + " " +  data["away_team"]["team_id"]
 					except:
 						print("file not found")	
 						return render_template("home.html")
 						
-					return redirect("/" + name_match + "_Events", code=302)
+					return redirect("/" + name_match , code=302)
 				else:
 					for elem in f:
 						if elem.content_type == "video/mp4":
@@ -78,8 +76,6 @@ def upload_file():
 						else:
 							if elem.content_type == 'application/json':
 										elem.save(os.path.join(os.path.abspath("./static/game/match"), "match.json"))
-			
-				return render_template("home.html")
 
 
 
@@ -89,6 +85,7 @@ The function matchView allows to change the events and the video to show.
 @app.route('/<match>')
 def matchView(match):
 
+	
 	try:
 		file_json = 'static/game/match/match.json'
 		data = json.load(open(file_json))
@@ -141,9 +138,10 @@ def matchView(match):
 This method allows to update all the tagged events in json format
 '''
 @app.route('/<match>/update', methods=['POST', 'GET'])
-def update(match):
+def save_events(match):
 	if request.method == "POST":
-    		
+
+
 			#recive the array with events
 			array_of_events = request.get_data()
 
@@ -171,18 +169,20 @@ def update(match):
 		
 
 			number_of_files_json = len(os.listdir(name_directory_json))+1
-			number_of_files_csv = len(os.listdir(name_directory_csv))+1
 
 			name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
-			name_file_csv = name_directory_csv + "/" + match + "_" + str(number_of_files_csv)+".csv"
+			
 
 			#write json in file
 			with open(name_file_json, "w") as outfile:
 				json.dump(data, outfile)
 			
 			#convert json file in csv
-			df = pd.read_json(name_file_json)
-			df.to_csv(name_file_csv, index=None)
+			# number_of_files_csv = len(os.listdir(name_directory_csv))+1
+			# name_file_csv = name_directory_csv + "/" + match + "_" + str(number_of_files_csv)+".csv"
+			# df = pd.read_json(name_file_json)
+			# df.to_csv(name_file_csv, index=None)
+			print("ok")
 			
 
 if __name__ == '__main__':

@@ -68,6 +68,14 @@
       let cordinateEndEventX = 0
       let cordinateEndEventY = 0
 
+      let mt_startX = 0
+      let mt_startY = 0
+      let mt_endX = 0
+      let mt_endY = 0
+
+      let start_position = false
+      let end_position = false
+
       let isActiveDraw = false
       
       
@@ -79,40 +87,45 @@
       gameControl
         .on('connect', gamepad => {
           var last_button = ''
-          var last_event_button = ''
-               
-
-          //for change element re-speech recogniction
           
           //1 when save event is active
           let double_press = 0
 
+          //to select the different moment in the  duel event
           let count_duel_press = 0
+        
           let start_stop = true
 
           let tab_ = document.getElementById("myTable")
           let cor = tab_.getBoundingClientRect().right - tab_.getBoundingClientRect().left
-          console.log(cor)
+          
 
       
 
 
-//add new event
+//add new event with double click
           gamepad.after('button13', () => {
 
             if (last_button != 'button13' && double_press == 1 && active_save_event) {
-
+              double_press = 0
+              //active the trigger for save event
               $('#new-event').trigger("click")
 
-              window.setTimeout(function(){last_button=''}, 300)
+              // window.setTimeout(function(){last_button=''}, 300)
 
+              //scrolls the table for see last inserted row
               var temp = $('#myTable tr').length
-              console.log(temp) 
-              
               document.getElementById('table_body').scrollTop = temp * 50;
               
-              double_press = 0
-              last_button = 'button13'
+              //set variable for draw
+              //change the color of ellipse in start mode (green)
+              start_position = true
+              end_position = false
+              resetDraw=true
+              cordinateX = cordinateEndX 
+              cordinateY = cordinateEndY
+              last_button = 'button10'
+
             }
             else{
               double_press += 1
@@ -123,6 +136,7 @@
           //when I press the button
           gamepad.before('button0', () => {
           
+            //set color row and all field for new event
             set_start_variable(this, key_0)
             active_save_event = false
             count_duel_press = 0
@@ -132,7 +146,7 @@
               $("#recovery_player").hide()
             }
             
-
+            //select and save time
             var vid = document.getElementById("myVideo");
             if (last_button != 'button0') {
 
@@ -140,11 +154,8 @@
 
               var time_start = (Math.round( vid.currentTime * 100) / 100)
               $("#time_event_start").val(time_start)
-
-
             }
             else{
-
               if( $('#time_event_start').val() < $('#time_event_end').val() ){
                 //invert, becouse is a new pass
                 temp = $('#time_event_start').val()
@@ -153,11 +164,12 @@
               }
 
             }
+
             vid.play()
           })
           //when I release the button
             .after('button0', () => {
-
+              //stop the video save end time
               var vid = document.getElementById("myVideo");
               vid.pause();
 
@@ -170,6 +182,7 @@
               }
               $("#time_event_end").val(time_end)
 
+              //active speech
               number = speech(this, "player_number")
 
               event_success = true
@@ -181,6 +194,7 @@
           //when I press the button
           gamepad.before('button1', () => {
 
+            //set color row and all field for new event
             set_start_variable(this, key_1)
             active_save_event = false
             count_duel_press = 0
@@ -192,6 +206,7 @@
               $("#recovery_player").hide()
             }
 
+            //set name event and time_start
             var vid = document.getElementById("myVideo");
             if (last_button != 'button1') {
 
@@ -213,7 +228,7 @@
           //when I release the button
           .after('button1', () => {
 
-
+            //stop video and set time_end
             var vid = document.getElementById("myVideo");
             vid.pause();
 
@@ -224,8 +239,11 @@
               time_end = time_start
             }
             $("#time_event_end").val(time_end)
+
+            //active speech recogniction
             number = speech(this, "player_number")
 
+            //active button14-15
             event_success = true
 
             last_button = 'button1'
@@ -235,6 +253,7 @@
           //when I press the button
           gamepad.before('button2', () => {
 
+            //set color row and all field for new event
             set_start_variable(this, key_2)
             active_save_event = false
             count_duel_press = 0
@@ -244,6 +263,7 @@
               $("#recovery_player").hide()
             }
 
+            //set name event and time_start
             var vid = document.getElementById("myVideo");
             if (last_button != 'button2') {
 
@@ -271,7 +291,7 @@
           //when I release the button
           .after('button2', () => {
 
-
+              //stop video and set time_end
               var vid = document.getElementById("myVideo");
               vid.pause();
 
@@ -282,8 +302,10 @@
                 time_end = time_start
               }
               $("#time_event_end").val(time_end)
+              //active speech recogniction
               number = speech(this, "player_number")
 
+              //active button14-15
               event_success = true
 
               last_button = 'button2'
@@ -292,39 +314,27 @@
 //button actualy not in use
           gamepad.before('button3', () => {
 
-            //   set_start_variable()
-            //   active_save_event = false
-            //   count_duel_press = 0
-            //   start_stop = true
-
-            //   if($("#possession_player").is(":visible") == true){
-            //     $("#possession_player").hide()
-            //     $("#recovery_player").hide()
-            //   }
-
-
-            //   var vid = document.getElementById("myVideo");
-            //   vid.play();
-            //   var vid = document.getElementById("myVideo");
-
-            //   var time_start = (Math.round( vid.currentTime * 100) / 100)
-            //   $("#time_event_start").val(time_start)
-            // }).after('button3', () => {
-            //   var vid = document.getElementById("myVideo");
-            //   vid.pause();
-
-            //   var time_end = (Math.round( vid.currentTime * 100) / 100)
-            //   var time_start = $("#time_event_start").val()
-
-            //   if(time_end < time_start){
-            //     $("#time_event_start").val(time_end)
-            //     time_end = time_start
-            //   }
-            //   $("#time_event_end").val(time_end)
-
-            //   number = speech(this, "player_number")
-            //   event_success = true
-            //   last_button = 'button3'
+              if($('#name_event').val() != key_5){
+                $("#player_number").val( speech_duel(this,"player_number"))
+              }else{
+                
+                count_duel_press -= 1
+                switch (count_duel_press){
+                  case 0:
+                    $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
+                    count_duel_press += 1
+                    break;
+                  case 1:
+                    $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
+                    count_duel_press += 1
+                    break;
+                  case -1:
+                    win = $("#winner_player").val( speech_duel(this,"winner_player"))
+                    count_duel_press += 1
+                    active_save_event = true
+                    break;
+                }
+              }
             });
 
 //event DUEL
@@ -335,11 +345,12 @@
 //step 3 : winner player number
           gamepad.before('button5', () => {
 
-            //reset all variable + variable for game stop
+            //set color row and all field for new event
             set_start_variable(this, key_5)
             active_save_event = false
             start_stop = true
 
+            //set name event and time_start
             $('#name_event').val(key_5)
             var vid = document.getElementById("myVideo");
 
@@ -347,6 +358,10 @@
             $("#time_event_start").val(time_start)
             last_button = 'button5'
 
+            //case 0 : press -> active video 
+            //         release -> stop video + speech possession number
+            //case 1 : speech recovery number
+            //case 2 : speech winner number + set color row + succ/fail + 
             switch (count_duel_press){
               case 0:
                 vid.play()
@@ -356,7 +371,6 @@
 
                 break;
               case 2:
-
                 win = $("#winner_player").val( speech_duel(this, "winner_player"))
                 event_success = true
                 active_save_event = true
@@ -399,15 +413,11 @@
             double_press = 0
             var vid = document.getElementById("myVideo");
 
-            
-            
-
             vid.pause();
             vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.04);
           });
 
 //start and stop video
-          
           gamepad.after('button7', () => {
             var vid = document.getElementById("myVideo");
             
@@ -445,12 +455,15 @@
 //event GAME STOP - gioco fermo
           gamepad.before('button9',     () => {
 
-            //reset all variable + variable for duel
+            //reset all variable + name event + time_start
+            //active if the video is interrupted and stop if the video is active
             set_start_variable()
             active_save_event = false
             count_duel_press = 0
             
             $('#name_event').val(key_9)
+
+            $('#player_number').val("")
             
             if($("#possession_player").is(":visible") == true){
               $("#possession_player").hide()
@@ -495,10 +508,13 @@
 
 //change the active team
           gamepad.on('button4',     () => { double_press = 0  })
-                 .after('button4',  () => { if($('#active_team').val() == '{{name_team_A}}'){ $('#active_team').val('{{name_team_B}}') } else { $('#active_team').val('{{name_team_A}}')};});
+                 .after('button4',  () => { if($('#active_team').val() == '{{name_team_A}}'){ $('#active_team').val('{{name_team_B}}') }
+                                            else { $('#active_team').val('{{name_team_A}}')};
+                                          });
 
 //event fail
           gamepad.after('button14', () => {
+              
               if(event_success && $("#name_event").val() != "Rest"){
                 isGoal = false
                 double_press = 0
@@ -514,6 +530,7 @@
 
 //event success
           gamepad.after('button15', () => {
+              
               if(event_success && $("#name_event").val() != "Rest"){
                 isGoal = false
                 double_press = 0
@@ -527,6 +544,7 @@
               }
           });
 
+          //variable to set number of possible extra_tags
           list_tag = JSON.parse('{{tag | tojson}}')
 
           len_pass = Object.keys(list_tag["k0"]).length
@@ -539,11 +557,14 @@
           count_extra = 1
           len_duel = Object.keys(list_tag["k5"]).length
           count_duel = 1
+          len_game_stop = Object.keys(list_tag["k9"]).length
+          count_game_stop = 1
 
-          
+//normal TAG       
 //TAG SHOT -> Goal       Pass -> Key Pass       Duel -> aerial duel
+//with each click changes the extra tag, resets it at each event change
           gamepad.after('button12', () => {
-              
+                           
               switch ($('#name_event').val()){
                 //KEY PASS
                 case key_0:
@@ -641,126 +662,179 @@
                     count_duel += 1
                   }
                   break
+                //GAME STOP
+                case key_9:
+                  
+                  if(count_game_stop < len_game_stop){
+                    val_key = str(count_game_stop)
+                    
+                    $('#extra_tag').val(list_tag["k9"][val_key])
+                    count_game_stop += 1
+                  }
+                  else{
+                    count_game_stop = 0
+                    val_key = str(count_game_stop)
+
+                    $('#extra_tag').val(list_tag["k9"][val_key])
+                    count_game_stop += 1
+                  }
+                  break
 
               }
 
           });
 
-//draw arrow up
+
+          max_width = document.getElementById("myTable").offsetWidth
+          max_height = document.getElementById("cells_row").getBoundingClientRect().top - (document.getElementById("myVideo").getBoundingClientRect().height/2 + document.getElementById("myVideo").getBoundingClientRect().top + document.getElementById("table_container").getBoundingClientRect().height) - 5
+          
+//draw arrow up for start pos
           gamepad.before('up0',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true;
+                    resetDraw = false
+                    start_position = false
+                   })
             .on('up0',     () => {
-                    cordinateEndY -= 1  })
+                    if (cordinateEndY > 0){
+                      cordinateEndY -= 1
+                    }
+                    })
             .after('up0',     () => {
-                    isActiveDraw=false });
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
 
-//draw arrow down
+//draw arrow down for start pos
           gamepad.before('down0',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true;
+                    resetDraw = false
+                    start_position = false })
             .on('down0',     () => {
-                    cordinateEndY += 1  })
+                    if ( cordinateEndY < max_height){
+                      cordinateEndY += 1
+                    }
+                    })
             .after('down0',     () => {
-                    isActiveDraw=false });
-//draw arrow right
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
+//draw arrow right for start pos
           gamepad.before('right0',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true;
+                    resetDraw = false
+                    start_position = false })
             .on('right0',     () => {
-                    cordinateEndX += 1  })
+                    if(cordinateEndX < (max_width) ){
+                      cordinateEndX += 1 
+                    }
+                    })
             .after('right0',     () => {
-                    isActiveDraw=false });
-//draw arrow left
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
+//draw arrow left for start pos
           gamepad.before('left0',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true;
+                    resetDraw = false
+                    start_position = false })
             .on('left0',     () => {
-                    cordinateEndX -= 1  })
+                    if(cordinateEndX > 0){
+                      cordinateEndX -= 1 
+                    }
+                    })
             .after('left0',     () => {
-                    isActiveDraw=false });
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
 
-
-                    
 
 //start position event
           gamepad.before('button10', () => {
             cordinateStartEventX = cordinateEndX
             cordinateStartEventY = cordinateEndY
+
+            start_position = true
+            end_position = false 
             isActiveDraw=false
+            resetDraw = true
             last_button = 'button10'
           });
 
 
-//draw arrow up
+//draw arrow up for end pos
           gamepad.before('up1',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true
+                    resetDraw = false
+                    start_position = false
+                    end_position = false })
             .on('up1',     () => {
-                    cordinateEndY -= 1  })
+                    if (cordinateEndY > 0){
+                      cordinateEndY -= 1
+                    }
+                    })
             .after('up1',     () => {
-                    isActiveDraw=false });
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
 
-//draw arrow down
+//draw arrow down for end pos
           gamepad.before('down1',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true
+                    resetDraw = false
+                    end_position = false })
             .on('down1',     () => {
-                    cordinateEndY += 1  })
+                    if ( cordinateEndY < max_height){
+                      cordinateEndY += 1
+                    }
+                    })
             .after('down1',     () => {
-                    isActiveDraw=false });
-//draw arrow right
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
+//draw arrow right for end pos
           gamepad.before('right1',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true
+                    resetDraw = false
+                    end_position = false })
             .on('right1',     () => {
-                    cordinateEndX += 1  })
+                    if(cordinateEndX < max_width ){
+                      cordinateEndX += 1 
+                    }
+                    })
             .after('right1',     () => {
-                    isActiveDraw=false });
-//draw arrow left
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
+//draw arrow left for end pos
           gamepad.before('left1',     () => {
-                    isActiveDraw=true })
+                    isActiveDraw=true 
+                    resetDraw = false
+                    end_position = false })
             .on('left1',     () => {
-                    cordinateEndX -= 1  })
+                    if(cordinateEndX > 0){
+                      cordinateEndX -= 1 
+                    }
+                    })
             .after('left1',     () => {
-                    isActiveDraw=false });
+                    isActiveDraw=false 
+                    start_position = false
+                    end_position = true});
 
-//end position event
+//end position event or active speech recogniction
           gamepad.before('button11', () => {
-            if(last_button == 'button10' ){
+            if(last_button == 'button10' || end_position ){
               cordinateEndEventX = cordinateEndX
               cordinateEndEventY = cordinateEndY
 
-              //set direction
-              console.log(cordinateStartEventX + " " + cordinateStartEventY + " " + cordinateEndEventX + " " + cordinateEndEventY)
-
-              setDirectionEvent(cordinateStartEventX,cordinateStartEventY , cordinateEndEventX,cordinateEndEventY)
+              start_position = false
+              end_position = true
               resetDraw = true
             }
-            else{
-              if($('#name_event').val() != key_5){
-                $("#player_number").val( speech_duel(this,"player_number"))
-              }else{
-                console.log(count_duel_press)
-                count_duel_press -= 1
-                switch (count_duel_press){
-                  case 0:
-                    $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
-                    count_duel_press += 1
-                    break;
-                  case 1:
-                    $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
-                    count_duel_press += 1
-                    break;
-                  case -1:
-                    win = $("#winner_player").val( speech_duel(this,"winner_player"))
-                    count_duel_press += 1
-                    active_save_event = true
-                    break;
-                }
-
-              }
-
-            }
-
+            
           })
           .after('button11',     () => {
             resetDraw = false});
-
-      });
+          });
 
     </script>
 
@@ -919,6 +993,7 @@
                 td4.appendChild(node4)
                 td5.appendChild(node5)
 
+                
                 var event_json = {
                   'event_id' : current_event_number,
                   'label' : $('#name_event').val(),
@@ -932,14 +1007,13 @@
                   'winner_number' : $("#winner_player_number").val(),
                   'outcome' :  $("#event_result").val(),
                   'extra_tag' : $("#extra_tag").val(),
-                  'start_position' : {"x" : cordinateStartEventX, "y" : cordinateStartEventY} ,
-                  'start_position' : {"x" : cordinateEndEventX, "y" : cordinateEndEventY} ,
+                  'start_position' : {"x" : convertX_px_mt(cordinateStartEventX,max_width), "y" : convertY_px_mt(cordinateStartEventY, max_height)} ,
+                  'end_position' : {"x" : convertX_px_mt(cordinateEndEventX,max_width), "y" : convertY_px_mt(cordinateEndEventY, max_height)} ,
                   
                 }
 
                 event_array = add_to_array(this,event_json, event_array)
                 
-
                 //Select ideal color before to add in list
                 if(isGoal){
                   row.style.backgroundColor = "lime"
@@ -965,11 +1039,11 @@
           }
         });
 
-        //save all events in Data/"name_match" both format json and csv 
+        //save all events in Data/"name_match" in format json 
         //the function is in static/myJSON
-        $("#update").click(function() {
+        $("#save_button").click(function() {
 
-          save_events(  '{{ name.n }}'  , event_array)
+          save_events(  '{{ match_name }}'  , event_array)
 
          });
 
@@ -986,7 +1060,9 @@
     <!-- Table with all events -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-md-2" id= "navBar">
 
-      <span class="navbar-brand mb-2 mt-2 display2 ">Events Tagging Dashboard</span>
+      <span class="navbar-brand mb-2 mt-2 display2">Soccer Logger</span>
+
+      <div class="col-sm-3"></div>
 
       <div class="col-sm-4">
         <h2 class="navbar-brand mb-2 mt-2 display2" style="color: white">{{ match_name }}</h2>
@@ -996,7 +1072,7 @@
       <div class="col-xs-5">
         <div class="row border border-secondary rounded-top">
           <div class="col-xs-3 my-auto">
-            <button type="button" class="btn btn-warning btn-md" id="update"><i class="mdi mdi-file-upload mdi-lg"></i> Save </button>
+            <button type="button" class="btn btn-warning btn-md" id="save_button"><i class="mdi mdi-file-upload mdi-lg"></i> Save </button>
           </div>
         </div>
       </div>
@@ -1141,7 +1217,7 @@
           </div>
           <div class="modal-body">
             <div class="container-fluid">
-              {% for key, value in squad_B.items() %}
+              {% for key, value in squad_A.items() %}
                   <div class="row">
                     <div class="col text-center">{{ key }}</div>
                     <div class="col text-center">{{ value | upper()}}</div>
@@ -1161,7 +1237,7 @@
           </div>
           <div class="modal-body">
             <div class="container-fluid">
-              {% for key, value in squad_A.items() %}
+              {% for key, value in squad_B.items() %}
                   <div class="row">
                     <div class="col text-center">{{ key }}</div>
                     <div class="col text-center">{{ value | upper()}}</div>
@@ -1173,6 +1249,7 @@
       </div>
     </div>
 
+    
 
   </body>
 </html>

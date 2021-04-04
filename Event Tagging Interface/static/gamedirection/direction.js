@@ -4,38 +4,39 @@ function radians_to_degrees(radians){
     return radians * (180/pi);
 }
 
-function setDirectionEvent( startX , startY, endX, endY){
+function setDirectionEvent( startX , startY, endX, endY, width_field, height_field){
+    //parameters != null
+    //calculate the real position in football field with pixels(x,y)
+    //football field (height = 68mt , width = 105mt)
 
-    //calculates the direction of the event, using the polar quadrant divided into 16 sections
-    //with the main axis X 
-    //https://it.wikipedia.org/wiki/Rosa_dei_venti Rosa dei venti a 16 punte
+    //    (0,0)---------------- 105 ----------------|
+    //      |
+    //      68
+    //      |
 
-    let deltaX = endX - startX
-    let deltaY = endY-startY
 
-    let angle = radians_to_degrees(Math.atan((deltaY)/(deltaX)))
-    console.log(angle)
-
-//da completare
-    if(angle == 0){
-        if(deltaX<0){
-            console.log("O")
-        }
-        else{
-            console.log("O")
-        }
-    }
-    else{
-        if(angle < 0 && angle > -45){
-            console.log("ENE")
-        }
-        else{
-            if(angle < -45 && angle > -90){
-                console.log("NNE")
-            }
-        }
-    }
+    console.log(width_field)
+    console.log(height_field)
+    console.log(startX)
     
+    relationshipX = 105/width_field
+    relationshipY = 68/height_field 
 
+    console.log(startX*relationshipX)
+    console.log(startY*relationshipY)
+    console.log(endX*relationshipX)
+    console.log(endY*relationshipY)   
+
+}
+
+function convertX_px_mt(x, width_field) {
+    
+    relationshipX = 105/width_field
+    return Math.round(x*relationshipX)
+}
+
+function convertY_px_mt(y, height_field) {
+    relationshipY = 68/height_field
+    return Math.round(y*relationshipY)
 }
 

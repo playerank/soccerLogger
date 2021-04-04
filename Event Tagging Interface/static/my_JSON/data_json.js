@@ -19,7 +19,7 @@ function print_array(obj, event_array){
 function save_events(match_name, event_array){
 
       url_address = "http://127.0.0.1:5000/"+match_name+"/update"
-      
+      print(event_array)
       $.ajax({
         type: "POST",
         data: JSON.stringify(event_array),
@@ -30,7 +30,7 @@ function save_events(match_name, event_array){
           console.log("ok");
         },
         error: function(e){
-          console.log("no ok")
+          console.log(e)
         }
         
       }); 
