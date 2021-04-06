@@ -58,8 +58,8 @@
       let cordinateX = 562/2;
       let cordinateY = 315/2;
 
-      let cordinateEndX = 200;
-      let cordinateEndY = 130;
+      let cordinateEndX = 562/2;
+      let cordinateEndY = 315/2;
 
 
       let cordinateStartEventX = 0;
@@ -77,7 +77,9 @@
       let end_position = false
 
       let isActiveDraw = false
+
       
+      let active_delete_row = false
       
 
       let resetDraw = false
@@ -98,9 +100,6 @@
 
           let tab_ = document.getElementById("myTable")
           let cor = tab_.getBoundingClientRect().right - tab_.getBoundingClientRect().left
-          
-
-      
 
 
 //add new event with double click
@@ -111,8 +110,6 @@
               //active the trigger for save event
               $('#new-event').trigger("click")
 
-              // window.setTimeout(function(){last_button=''}, 300)
-
               //scrolls the table for see last inserted row
               var temp = $('#myTable tr').length
               document.getElementById('table_body').scrollTop = temp * 50;
@@ -121,7 +118,8 @@
               //change the color of ellipse in start mode (green)
               start_position = true
               end_position = false
-              resetDraw=true
+              resetDraw = false
+              isActiveDraw = false
               cordinateX = cordinateEndX 
               cordinateY = cordinateEndY
               last_button = 'button10'
@@ -164,7 +162,6 @@
               }
 
             }
-
             vid.play()
           })
           //when I release the button
@@ -696,7 +693,7 @@
                    })
             .on('up0',     () => {
                     if (cordinateEndY > 0){
-                      cordinateEndY -= 1
+                      cordinateEndY -= 2
                     }
                     })
             .after('up0',     () => {
@@ -711,7 +708,7 @@
                     start_position = false })
             .on('down0',     () => {
                     if ( cordinateEndY < max_height){
-                      cordinateEndY += 1
+                      cordinateEndY += 2
                     }
                     })
             .after('down0',     () => {
@@ -725,7 +722,7 @@
                     start_position = false })
             .on('right0',     () => {
                     if(cordinateEndX < (max_width) ){
-                      cordinateEndX += 1 
+                      cordinateEndX += 2 
                     }
                     })
             .after('right0',     () => {
@@ -739,7 +736,7 @@
                     start_position = false })
             .on('left0',     () => {
                     if(cordinateEndX > 0){
-                      cordinateEndX -= 1 
+                      cordinateEndX -= 2 
                     }
                     })
             .after('left0',     () => {
@@ -758,6 +755,8 @@
             isActiveDraw=false
             resetDraw = true
             last_button = 'button10'
+          }).after('button10', ()=>{
+            resetDraw = false
           });
 
 
@@ -769,7 +768,7 @@
                     end_position = false })
             .on('up1',     () => {
                     if (cordinateEndY > 0){
-                      cordinateEndY -= 1
+                      cordinateEndY -= 2
                     }
                     })
             .after('up1',     () => {
@@ -784,7 +783,7 @@
                     end_position = false })
             .on('down1',     () => {
                     if ( cordinateEndY < max_height){
-                      cordinateEndY += 1
+                      cordinateEndY += 2
                     }
                     })
             .after('down1',     () => {
@@ -798,7 +797,7 @@
                     end_position = false })
             .on('right1',     () => {
                     if(cordinateEndX < max_width ){
-                      cordinateEndX += 1 
+                      cordinateEndX += 2 
                     }
                     })
             .after('right1',     () => {
@@ -812,7 +811,7 @@
                     end_position = false })
             .on('left1',     () => {
                     if(cordinateEndX > 0){
-                      cordinateEndX -= 1 
+                      cordinateEndX -= 2 
                     }
                     })
             .after('left1',     () => {
@@ -887,8 +886,10 @@
         // show a specific element
         $('#myTable').on( 'click', 'tbody tr', function () {
 
+          //0 -- event id
+          var id = $( this ).find('td:nth-child(7)').text();
           //1 -- event type
-          var name_e = $( this ).find('td:nth-child(1)').text();
+          var type_event = $( this ).find('td:nth-child(1)').text();
           //2 -- time start
           var t_start = $( this ).find('td:nth-child(2)').text();
           //3 -- time end
@@ -917,7 +918,7 @@
 
           set_color_row(this, col)
           
-          $('#name_event').val(name_e)
+          $('#name_event').val(type_event)
           $('#time_event_start').val(t_start) 
           $('#time_event_end').val(t_end)
           $('#extra_tag').val(e_tag)
@@ -926,7 +927,34 @@
 
           var vid = document.getElementById("myVideo");
           vid.currentTime = t_start
+        
+          if(active_delete_row){
+            $(this).closest('tr').remove();
+            event_array = remove_to_array(this , id , event_array)
+            $("#current_event_number").val(parseInt($("#current_event_number").val())-1)
+           
+          }
+          
         });
+
+        //delete event
+        //show alert + show red icon when delete is abilitate
+        //remove the row in the table and
+        //search the element in the array_element and remove 
+        $("#delete_event").click(function(){
+          if(active_delete_row == false){
+            alert("Attenzione\nhai attivato la cancellazione della riga selezionata. \nRicorda di rimuovere questa modalità per le semplici selezioni.")
+            active_delete_row = true
+            document.getElementById("icon_del").style.color = "red";  
+            document.getElementById("alert_del").style.display = "block";          
+          }
+          else{
+            active_delete_row = false
+            document.getElementById("icon_del").style.color = "black";
+            document.getElementById("alert_del").style.display = "none";  
+          }
+        });
+
 
         var csv_is_new = true
         var first_row_number = $('#myTable tbody tr:first').find('td:nth-child(1)').text()
@@ -935,10 +963,11 @@
         }
 
         let event_array = []
+        let id = 0 
 
       //insert new event
         $("#new-event").click(function() {
-
+          
           if($('#name_event').val() != "Event"){
             if(first_row_number == 1){
                   var current_event_number = $('#myTable tr').length
@@ -960,12 +989,14 @@
                 var td3 = row.insertCell(3)   //possession player
                 var td4 = row.insertCell(4)   //possession team (A - B)
                 var td5 = row.insertCell(5)   //extra_tag
+                var td6 = row.insertCell(6)   //id for selected in delete
 
                 td1.style.textAlign = "center"
                 td2.style.textAlign = "center"
                 td3.style.textAlign = "center"
                 td4.style.textAlign = "center"
                 td5.style.textAlign = "right"
+                td6.style.display = "none"
 
                 var node0 = document.createTextNode($('#name_event').val())
                 var node1 = document.createTextNode($("#time_event_start").val())
@@ -982,6 +1013,7 @@
 
                 var node4 = document.createTextNode($("#active_team").val())
                 var node5 = document.createTextNode($("#extra_tag").val())
+                var node6 = document.createTextNode(id)
 
                 // if we want add result of event in the row
                 // var node5 = document.createTextNode($("#event_result").val())
@@ -992,10 +1024,11 @@
                 td3.appendChild(node3)
                 td4.appendChild(node4)
                 td5.appendChild(node5)
+                td6.appendChild(node6)
 
                 
                 var event_json = {
-                  'event_id' : current_event_number,
+                  'event_id' : id,
                   'label' : $('#name_event').val(),
                   'time_start' : $("#time_event_start").val(),
                   'time_end' : $("#time_event_end").val(),
@@ -1009,7 +1042,6 @@
                   'extra_tag' : $("#extra_tag").val(),
                   'start_position' : {"x" : convertX_px_mt(cordinateStartEventX,max_width), "y" : convertY_px_mt(cordinateStartEventY, max_height)} ,
                   'end_position' : {"x" : convertX_px_mt(cordinateEndEventX,max_width), "y" : convertY_px_mt(cordinateEndEventY, max_height)} ,
-                  
                 }
 
                 event_array = add_to_array(this,event_json, event_array)
@@ -1036,6 +1068,7 @@
                   }
                 }
                 $("#current_event_number").val(current_event_number)
+                id += 1
           }
         });
 
@@ -1069,14 +1102,23 @@
       </div>
 
 
-      <div class="col-xs-5">
+      <div class="col-xs-3">
         <div class="row border border-secondary rounded-top">
           <div class="col-xs-3 my-auto">
             <button type="button" class="btn btn-warning btn-md" id="save_button"><i class="mdi mdi-file-upload mdi-lg"></i> Save </button>
           </div>
         </div>
       </div>
+
+
+
+      <div class="col-sm-2 offset-sm-2">
+        <i class="material-icons center" style="color:red; font-size: 50px; display: none; " id="alert_del">delete</i>
+      </div>
+      
     </nav>
+
+
 
     <div class="container-fluid p-2 bg-light text-dark" id="container1">
 
@@ -1172,8 +1214,12 @@
         <input class="text-center" type="text hidden" id="possession_player_number" vlue = "0">
       </div>
 
-      <button type="button" class="btn btn-outline-dark" id="new-event">
-        <i class="material-icons">playlist_add</i>
+      <button type="button" class="btn-lg" id="delete_event">
+        <i class="material-icons center" style="color:black; font-size: 50px;" id="icon_del">delete</i>
+      </button>
+
+      <button type="button" class="btn-sm invisible" id="delete_event">
+        <i class="material-icons center"  id="new-event">save</i>
       </button>
 
       <div class="col-xs-3 offset-xs-1" id="recovery_player" style="display:none">
