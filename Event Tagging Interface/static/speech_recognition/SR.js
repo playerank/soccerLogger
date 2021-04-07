@@ -129,7 +129,7 @@ function set_duel_winner(obj){
         set_color_row(this, "lightgreen")
         $("#event_result").val("SUCC") 
         $("#event_result").val(key_succ)
-        console.log($("#winner_player_number").val())
+        //console.log($("#winner_player_number").val())
     }
     else{
         if($("#winner_player").val() == $("#recovery_player_number").val()){
@@ -139,7 +139,7 @@ function set_duel_winner(obj){
             set_color_row(this, "LightCoral")
             $("#event_result").val("FAIL")
             $("#event_result").val(key_fail)
-            console.log($("#winner_player_number").val())
+            //console.log($("#winner_player_number").val())
         }
         else{
             

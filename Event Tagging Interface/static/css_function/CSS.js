@@ -5,7 +5,6 @@ function set_color_row(obj, color){
     document.getElementById("time_event_end").style.backgroundColor = color
     document.getElementById("player_number").style.backgroundColor = color
     document.getElementById("active_team").style.backgroundColor = color
-
-
+    
 
 }

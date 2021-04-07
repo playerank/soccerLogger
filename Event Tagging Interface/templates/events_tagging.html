@@ -351,8 +351,7 @@
             $('#name_event').val(key_5)
             var vid = document.getElementById("myVideo");
 
-            var time_start = (Math.round( vid.currentTime * 100) / 100)
-            $("#time_event_start").val(time_start)
+            
             last_button = 'button5'
 
             //case 0 : press -> active video 
@@ -361,6 +360,9 @@
             //case 2 : speech winner number + set color row + succ/fail + 
             switch (count_duel_press){
               case 0:
+                var time_start = (Math.round( vid.currentTime * 100) / 100)
+                $("#time_event_start").val(time_start)
+
                 vid.play()
                 break
               case 1:
@@ -886,6 +888,9 @@
         // show a specific element
         $('#myTable').on( 'click', 'tbody tr', function () {
 
+          $("#possession_player").hide()
+          $("#recovery_player").hide()
+
           //0 -- event id
           var id = $( this ).find('td:nth-child(7)').text();
           //1 -- event type
@@ -917,14 +922,34 @@
           col = "#" + r + g + b 
 
           set_color_row(this, col)
-          
+
+          //set value in all items
           $('#name_event').val(type_event)
           $('#time_event_start').val(t_start) 
           $('#time_event_end').val(t_end)
           $('#extra_tag').val(e_tag)
           $('#active_team').val(team)
-          $('#player_number').val(number_p)
+         
+          if(type_event == key_5){
+            arr = number_p.split(" ")
+            console.log(arr)
+            pos = arr[1].split("\n")[0]
+            rec = arr[2].split("\n")[0]
+            win = arr[3]
+            
+            $("#possession_player").show()
+            $("#recovery_player").show()
 
+            $('#player_number').val(" ")
+            $("#possession_player_number").val(pos)
+            $("#recovery_player_number").val(rec)
+            $("#winner_player_number").val(win)
+        
+          }
+          else{
+            $('#player_number').val(number_p)
+          }
+          
           var vid = document.getElementById("myVideo");
           vid.currentTime = t_start
         
@@ -932,7 +957,6 @@
             $(this).closest('tr').remove();
             event_array = remove_to_array(this , id , event_array)
             $("#current_event_number").val(parseInt($("#current_event_number").val())-1)
-           
           }
           
         });
