@@ -696,6 +696,7 @@
             .on('up0',     () => {
                     if (cordinateEndY > 0){
                       cordinateEndY -= 2
+                      console.log("su")
                     }
                     })
             .after('up0',     () => {
@@ -711,6 +712,7 @@
             .on('down0',     () => {
                     if ( cordinateEndY < max_height){
                       cordinateEndY += 2
+                      console.log("giu")
                     }
                     })
             .after('down0',     () => {
