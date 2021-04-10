@@ -116,7 +116,7 @@
               
               //set variable for draw
               //change the color of ellipse in start mode (green)
-              start_position = true
+              start_position = false
               end_position = false
               resetDraw = false
               isActiveDraw = false
@@ -308,8 +308,8 @@
               last_button = 'button2'
           });
 
-//button actualy not in use
-          gamepad.before('button3', () => {
+//active speech recogniction
+          gamepad.before('button5', () => {
 
               if($('#name_event').val() != key_5){
                 $("#player_number").val( speech_duel(this,"player_number"))
@@ -340,7 +340,7 @@
 //     1   release -> stop video + speach posession player
 //step 2 : recovery player number
 //step 3 : winner player number
-          gamepad.before('button5', () => {
+          gamepad.before('button3', () => {
 
             //set color row and all field for new event
             set_start_variable(this, key_5)
@@ -352,7 +352,7 @@
             var vid = document.getElementById("myVideo");
 
             
-            last_button = 'button5'
+            last_button = 'button3'
 
             //case 0 : press -> active video 
             //         release -> stop video + speech possession number
@@ -379,7 +379,7 @@
 
             count_duel_press += 1
           })
-          .after('button5', () => {
+          .after('button3', () => {
             var vid = document.getElementById("myVideo");
             switch(count_duel_press){
               case 1:
@@ -696,7 +696,6 @@
             .on('up0',     () => {
                     if (cordinateEndY > 0){
                       cordinateEndY -= 2
-                      console.log("su")
                     }
                     })
             .after('up0',     () => {
@@ -712,7 +711,6 @@
             .on('down0',     () => {
                     if ( cordinateEndY < max_height){
                       cordinateEndY += 2
-                      console.log("giu")
                     }
                     })
             .after('down0',     () => {
@@ -761,6 +759,8 @@
             last_button = 'button10'
           }).after('button10', ()=>{
             resetDraw = false
+            $('#x_start').val(convertX_px_mt(cordinateStartEventX, max_width))
+            $('#y_start').val(convertY_px_mt(cordinateStartEventY, max_height))
           });
 
 
@@ -836,8 +836,11 @@
             
           })
           .after('button11',     () => {
-            resetDraw = false});
+            resetDraw = false
+            $('#x_end').val(convertX_px_mt(cordinateEndEventX, max_width))
+            $('#y_end').val(convertY_px_mt(cordinateEndEventY, max_height))
           });
+      });
 
     </script>
 
@@ -864,6 +867,10 @@
           }
         });
 
+
+        $("#state_event").click(function(){
+          $(state_interface).modal('show');
+        })
 
 //create the obj table
         $('#myTable').DataTable( {
@@ -969,7 +976,7 @@
         //search the element in the array_element and remove 
         $("#delete_event").click(function(){
           if(active_delete_row == false){
-            alert("Attenzione\nhai attivato la cancellazione della riga selezionata. \nRicorda di rimuovere questa modalità per le semplici selezioni.")
+            alert("ATTENCTION\nBy selecting a row it will be deleted.\nRemember to remove this tick for simple selections")
             active_delete_row = true
             document.getElementById("icon_del").style.color = "red";  
             document.getElementById("alert_del").style.display = "block";          
@@ -1136,11 +1143,11 @@
         </div>
       </div>
 
-
-
       <div class="col-sm-2 offset-sm-2">
-        <i class="material-icons center" style="color:red; font-size: 50px; display: none; " id="alert_del">delete</i>
-      </div>
+        <button type="button" class="btn-lg" id="delete_event">
+          <i class="material-icons center" style="color:black; font-size: 40px;" id="icon_del">delete</i>
+        </button>
+      </div> 
       
     </nav>
 
@@ -1177,58 +1184,87 @@
 
     <!-- ROW WHIT ALL CELL -->
     <div class="row justify-content-md-center" > 
-      
-      <div class="col-xs-3"></div>
 
-      <div class="col-xs-3 bg-dark text-white text-center" style="width: 200px;" >
+      <div class="col-xs bg-dark text-white text-center" style="width: 150px;" >
         Tipo
       </div>
-
-
-      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+      <div class="col-xs bg-dark text-white text-center" style="width: 150px;">
         Start Time
       </div>
-      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+      <div class="col-xs bg-dark text-white text-center" style="width: 150px;">
         End Time
       </div>
-      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+      <div class="col-xs bg-dark text-white text-center" style="width: 150px;">
         Player Shirt
       </div>
-      <div class="col-xs-3 bg-dark text-white text-center" style="width: 175px;">
+      <div class="col-xs bg-dark text-white text-center" style="width: 150px;">
         Team
       </div>
-      <div class="col-xs-3 bg-dark text-white text-center" style="width: 200px;">
+      <div class="col-xs bg-dark text-white text-center" style="width: 250px;">
         Extra Tag
       </div>
-      <div class="col-xs-3 bg-dark text-white text-center" style="width: 200px;">
-        # Events
+      <div class="col-xs bg-dark text-white text-center" style="width: 50px;">
+        #
       </div>
+      <div class="col-xs">
+        <p style="width: 100px; background-color: black;"></p>
+      </div>
+      <div class="col-xs bg-dark text-white text-center" style="width: 100px;">
+        x_Start
+      </div>
+      <div class="col-xs bg-dark text-white text-center" style="width: 100px;">
+        y_Start
+      </div>
+      <div class="col-xs bg-dark text-white text-center" style="width: 100px;">
+        x_End
+      </div>
+      <div class="col-xs bg-dark text-white text-center" style="width: 100px;">
+        y_End
+      </div>
+
     </div>
 
     <div class="row justify-content-md-center" id="cells_row">
       
 
-      <div class="col-xs-3">
-        <input class="text-center" type="text" id="name_event" value="Event">
+      <div class="col-xs">
+        <input class="text-center" type="text" id="name_event" style="width: 150px;" value="Event">
       </div>
-      <div class="col-xs-3 offset-xs-1">
-        <input class="text-center" type="number" id="time_event_start" value="0">
+      <div class="col-xs">
+        <input class="text-center" type="number" id="time_event_start" style="width: 150px;" value="0">
       </div>
-      <div class="col-xs-3">
-        <input class="text-center" type="number" id="time_event_end" value="0">
+      <div class="col-xs">
+        <input class="text-center" type="number" id="time_event_end" style="width: 150px;" value="0">
       </div>
-      <div class="col-xs-3">
-        <input class="text-center" type="number" id="player_number">
+      <div class="col-xs">
+        <input class="text-center" type="number" style="width: 150px;" id="player_number">
       </div>
-      <div class="col-xs-3 offset-xs-1">
-        <input class="text-center" type="text" id="active_team" value = "">
+      <div class="col-xs">
+        <input class="text-center" type="text" id="active_team" style="width: 150px;" value = "">
       </div>
-      <div class="col-xs-3 offset-xs-1">
-        <input class="text-right" type="text" id="extra_tag" value = "">
+      <div class="col-xs">
+        <input class="text-right" type="text" id="extra_tag" style="width: 250px;" value = "">
       </div>
-      <div class="col-xs-3 offset-xs-1">
-        <input class="text-right" type="text" id="current_event_number" value = "0">
-      </div>      
+      <div class="col-xs">
+        <input class="text-center" type="text" id="current_event_number" style="width: 50px;" value = "0">        
+      </div>
+      <div class="col-xs">
+        <p style="width: 100px; background-color: black;"></p>
+      </div>
+      <div class="col-xs">
+        <input class="text-center" type="text" id="x_start" style="width: 100px;" value = "0">        
+      </div>
+      <div class="col-xs">
+        <input class="text-center" type="text" id="y_start" style="width: 100px;" value = "0">        
+      </div>
+      <div class="col-xs">
+        <input class="text-center" type="text" id="x_end" style="width: 100px;" value = "0">        
+      </div>
+      <div class="col-xs">
+        <input class="text-center" type="text" id="y_end" style="width: 100px;" value = "0">        
+      </div>
+      
+          
     </div>
 
     <p></p>
@@ -1241,7 +1277,7 @@
       </div>
 
       <button type="button" class="btn-lg" id="delete_event">
-        <i class="material-icons center" style="color:black; font-size: 50px;" id="icon_del">delete</i>
+        <i class="material-icons center" style="color:black; font-size: 50px;" id="state_event">info</i>
       </button>
 
       <button type="button" class="btn-sm invisible" id="delete_event">
@@ -1255,6 +1291,8 @@
       <div class="col-xs-3 offset-xs-1" id="winner_player" style="display:none">
         <input class="text-center" type="text" id="winner_player_number" vlue = "0">
       </div>
+
+      
 
     </div>
 
@@ -1316,6 +1354,19 @@
                   </div>
               {% endfor %}
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal custom fade" id="state_interface" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <!-- <div class="modal custom fade" tabindex="-1" role="dialog" id="state_interface"> -->
+      <div class="modal-dialog modal-xl" >
+        <div class="modal-content">
+          <div class="modal-body">
+            
+              <img class="modal-content" src="static/images/controller.jpg">
+            
           </div>
         </div>
       </div>

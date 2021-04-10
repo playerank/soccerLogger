@@ -43,8 +43,9 @@ function draw() {
     image(field, 0, 0, width_image, height_image);
     image(pg, 0, 0);
 
-    strokeWeight(10);
+    
     pg.fill(255,0,255)
+    pg.strokeWeight(4);
     temp = pg.line(cordinateX, cordinateY, cordinateEndX, cordinateEndY);
 
     cordinateX = cordinateEndX 
@@ -75,9 +76,8 @@ function draw() {
     clear()
 
     image(field, 0, 0, width_image, height_image);
-    strokeWeight(10);
 
-    pg.ellipse(cordinateX, cordinateY, 10)
+    pg.ellipse(cordinateX, cordinateY, 20)
     image(pg, 0, 0);
     
   }
@@ -91,7 +91,6 @@ function resetSketch(){
 
   x = document.getElementById("myTable").getBoundingClientRect().width
   y = document.getElementById("cells_row").getBoundingClientRect().top - pos_y + 120
-
   
   pg = createGraphics(x,y);
   
@@ -105,5 +104,5 @@ function resetSketch(){
         pg.fill(255);
       }
   } 
-  pg.ellipse(cordinateX, cordinateY, 10)
+  pg.ellipse(cordinateX, cordinateY, 20)
 }
