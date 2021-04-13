@@ -60,24 +60,28 @@ to the first half of the first match in the static folder (in alphabetical order
 '''	
 @app.route('/')
 def init():
-    return render_template("home.html")
+    return render_template("home.html", condition = "False", message = "first start")
 	#return redirect("/" + matches_value[0] + "_Events", code=302)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    		
 		if request.method == 'POST':
 				
 				f = request.files.getlist("file")
 				
-				if len(f) == 0 :
+				if len(f) == 0 or (f[0].content_type != "video/mp4" and f[0].content_type != 'application/json'):
+    					
 					try:
 						file_json = 'static/game/match/match.json'
 						data = json.load(open(file_json))
 						name_match = data["home_team"]["team_id"] + " " +  data["away_team"]["team_id"]
 					except:
-						print("file not found")	
-						return render_template("home.html")
+						message = "invalid file"
+					
+						condition = "True"
+						return render_template("home.html", condition = condition, message = message)
 						
 					return redirect("/" + name_match , code=302)
 				else:
@@ -86,9 +90,12 @@ def upload_file():
 								elem.save(os.path.join(os.path.abspath("./static/game/video"), "game.mp4"))
 						else:
 							if elem.content_type == 'application/json':
-										elem.save(os.path.join(os.path.abspath("./static/game/match"), "match.json"))
-
-
+										elem.save(os.path.join(os.path.abspath("./static/game/match"), "match.json"))	
+					
+					message = "upload complete"
+					condition = "True"
+				
+				return render_template("home.html", condition = condition, message = message)
 
 '''
 The function matchView allows to change the events and the video to show.
@@ -107,8 +114,11 @@ def matchView(match):
 		data_tag = json.load(open(tag_json))
 				 
 	except:
-		print("file not found 2")
-		return render_template("home.html")
+		print("file not found 3")
+		message = "file not found"
+					
+		condition = True
+		return render_template("home.html", condition = condition, message = message)
 
 	date_last_update =""
 
