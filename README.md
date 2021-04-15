@@ -3,7 +3,7 @@
 [![codecov.io Code Coverage](https://img.shields.io/codecov/c/github/dwyl/hapi-auth-jwt2.svg?maxAge=2592000)](https://codecov.io/github/dwyl/hapi-auth-jwt2?branch=master)
 
 <p align="center">
-    <img src="/Scheme/Logo1.png" width="100" height="100">
+    <img src="/Scheme/Logo1.png" width="300" height="300">
 </p>
 
 ![logo](/Scheme/Logo1.png = 50x50)
