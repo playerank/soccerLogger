@@ -2,7 +2,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 [![codecov.io Code Coverage](https://img.shields.io/codecov/c/github/dwyl/hapi-auth-jwt2.svg?maxAge=2592000)](https://codecov.io/github/dwyl/hapi-auth-jwt2?branch=master)
 
-![logo](/Scheme/Logo.png)
+![logo size:50%](/Scheme/Logo.png){width: 50%}
 
 #Motivation
 To provide a football event tracking tool with a logic similar to that of the most popular football games (Fifa, Pes). 
@@ -33,6 +33,15 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 2.Now install all necessary dependencing with [pip](https://pypi.org/project/pip/)<br/>
 ............
 3.Download SoccerLogger<br/>
+
+###Ubuntu<br/>
+Coming Soon
+:joy:
+
+###macOS<br/>
+Coming Soon
+:joy:
+
 
 #Developer User<br/>
 Is possible clone the repository github in your IDE. When you installed all dependencing you can run the program<br/> with comand python ./event_tagging.py, or possibily modify the code.<br/>
