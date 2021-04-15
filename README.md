@@ -2,7 +2,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 [![codecov.io Code Coverage](https://img.shields.io/codecov/c/github/dwyl/hapi-auth-jwt2.svg?maxAge=2592000)](https://codecov.io/github/dwyl/hapi-auth-jwt2?branch=master)
 
-![logo](/Scheme/Logo1.png | width=50%)
+![logo](/Scheme/Logo1.png =50x50)
 
 #Motivation
 To provide a football event tracking tool with a logic similar to that of the most popular football games (Fifa, Pes). 
