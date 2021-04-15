@@ -6,7 +6,6 @@
     <img src="/Scheme/Logo1.png" width="300" height="300">
 </p>
 
-![logo](/Scheme/Logo1.png = 50x50)
 
 #Motivation
 To provide a football event tracking tool with a logic similar to that of the most popular football games (Fifa, Pes). 
@@ -17,6 +16,7 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 ![interface](file interface)
 
 #Usage
+
 ![Commands](/Scheme/controller.jpg)
 
 ******************************************************************************************************************************************************************
@@ -60,14 +60,17 @@ $ git clone https://github.com/playerank/soccerLogger.git
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.png)  
 3.Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```<br/>                                                                   
-4.Select file json with propertys of the match and video mp4 with the match video, when upload is complete press play.
+4.Select file json with propertys of the match and video mp4 with the match video, when upload is complete press Start Game.
 
 ![first interface](/Scheme/upload_files.png)
 
 5.Enjoy :smiley: :smiley: :smiley: :thumbsup:<br/>
-6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/Name match/json.
 
 ![event](/Scheme/envet_interface.png)
+
+6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/Name match/json.
+
+
 
 
 
@@ -80,8 +83,10 @@ Once launched, on your shell you should have a success message such as the follo
 - [ ] Auto updates
 
 #Customizable
+
 ##Tags
-Events which can be chosen are parameterizable, the file soccerLogger-main\Event Tagging <br/>Interface\static\game\extra_tag\extra_tag.json contains all keys used in the program. <br/>
+
+Events which can be chosen are parameterizable, the file soccerLogger-main\Event Tagging Interface\static\game\extra_tag\extra_tag.json contains all keys used in the program. <br/>
 Standard Events are "Pass" "Cross" "Shot" "Duel", to extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
 
 ![extra_tag](/Scheme/extra_tag.png)
@@ -113,6 +118,5 @@ supervisors:	Paolo Cintia
 		Luca Pappalardo 
 
 #Support<br/>
-if you need, you can email at gonnella_andrea@yahoo.it or a message at my profile github mrg1913
-
+if you need, you can email at gonnella_andrea@yahoo.it.
 
