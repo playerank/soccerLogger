@@ -23,7 +23,7 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 
 ******************************************************************************************************************************************************************
 #Demo
-;point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
+:point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
 <br>
 
 ##Installation
@@ -45,16 +45,17 @@ $ git clone https://github.com/playerank/soccerLogger.git
 ```
 
 #Run the interface
+
 1.Move in Event tagging interface --> [cd "Event Tagging Interface"]
 2.Run [python events_tagging_dashboard.py]
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.png)  
 3.Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```                                                                     
-3.Select file json with propertys of the match and video mp4 with the match video, when upload is complete press play.
+4.Select file json with propertys of the match and video mp4 with the match video, when upload is complete press play.
 ![first interface](/Scheme/upload_files.png)
-4.Enjoy :smiley: :smiley: :smiley: :thumbsup:
+5.Enjoy :smiley: :smiley: :smiley: :thumbsup:
 ![event](/Scheme/envet_interface.png)
-5.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/Name match/json.
+6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/Name match/json.
 
 
 
