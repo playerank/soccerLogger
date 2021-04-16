@@ -7,7 +7,7 @@
 </p>
 
 
-#Motivation
+# Motivation
 
 To provide a football event tracking tool with a logic similar to that of the most popular football games (Fifa, Pes). 
 There are already platforms that deal with tracking this data but they often have high costs and therefore are accessible only to large teams, this has created the idea of ​​an open source software accessible to all competitive levels.
@@ -17,7 +17,7 @@ There are already platforms that deal with tracking this data but they often hav
 The code in this repository implements **Event Tagging Interface**, a web application :computer: which allows a user to define temporal window of events from soccer :soccer: video broadcasts using a gamepad :joystick:. 
 
 
-#Usage
+# Usage
 
 ![Commands](/Scheme/controller.jpg)
 
@@ -26,13 +26,12 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 :point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
 <br>
 
-##Installation
+## Installation
 
-###Windows
-
+### Windows
 1.Check if Python is already installed in your pc
 
-#Normal User<br/>
+# Normal User
 1.1.open prompt --> [py --versio] <br/>
 1.2.if the version is 3.9.4 or later, it's ok<br/>
   else download and instal [python](https://www.python.org/downloads/) <br/>
@@ -40,22 +39,22 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 ............
 3.Download SoccerLogger<br/>
 
-###Ubuntu<br/>
+### Ubuntu<br/>
 Coming Soon
 :joy:
 
-###macOS<br/>
+### macOS<br/>
 Coming Soon
 :joy:
 
 
-#Developer User<br/>
+# Developer User
 Is possible clone the repository github in your IDE. When you installed all dependencing you can run the program<br/> with comand python ./event_tagging.py, or possibily modify the code.<br/>
 ```sh
 $ git clone https://github.com/playerank/soccerLogger.git
 ```
 
-#Run the interface
+# Run the interface
 
 1.Move in Event tagging interface --> [cd "Event Tagging Interface"]<br/>
 2.Run [python events_tagging_dashboard.py]<br/>
@@ -76,7 +75,7 @@ Once launched, on your shell you should have a success message such as the follo
 
 
 
-##Feature
+## Feature
 
 - [x] Gamepad control
 - [x] Customizable Event types
@@ -84,41 +83,40 @@ Once launched, on your shell you should have a success message such as the follo
 - [ ] Offline support (Speech Recogintion does not go offline)
 - [ ] Auto updates
 
-#Customizable
+# Customizable
 
-##Tags
+## Tags
 
 Events which can be chosen are parameterizable, the file soccerLogger-main\Event Tagging Interface\static\game\extra_tag\extra_tag.json contains all keys used in the program. <br/>
 Standard Events are "Pass" "Cross" "Shot" "Duel", to extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
 
 ![extra_tag](/Scheme/extra_tag.png)
 
-##Match
+## Match
 
 The properties of the match (bech, lineup, name teams... etc) are editing when you upload the json file in first interface.<br/>
 there is a sample file of the structure required for the program to function properly [prova_match.json]
 
 ![prova_match](/Scheme/prova_match.png)
 
-#Library<br/>
+# Library
 flask: control all html pages with they requests "GET" - "POST" and interfaces [flask](https://flask.palletsprojects.com/en/1.1.x/)<br/>
 p5: draws the starting and ending position on the field [p5](https://p5js.org/)<br/>
 gamecontroller: capture and manage all the buttons pressed on the gamepad [gamecontroller](https://github.com/alvaromontoro/gamecontroller.js)<br/>
 speech recognition: capture the microphone to select player number [speech recognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition)<br/>
 Besides these there are some personal functions in this project.
 
-#Tests<br/>
+# Tests
 All tests are manualy, I try all type of posible combination of button, but if ther is an error, plese write me.
 
-#Contributing<br/>
+# Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
-#Authors and acknowledgement<br/>
+# Authors and acknowledgement
 authors: Andrea Gonnella - email: gonnella_andrea@yahoo.it
 supervisors:	Paolo Cintia
 		Luca Pappalardo 
 
-#Support<br/>
+# Support
 if you need, you can email at gonnella_andrea@yahoo.it.
-
