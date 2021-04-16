@@ -32,12 +32,15 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 1.Check if Python is already installed in your pc
 
 # Normal User
-1.1.open prompt --> [py --versio] <br/>
-1.2.if the version is 3.9.4 or later, it's ok<br/>
+1.1. open prompt 
+```sh
+$ py --version
+```
+1.2. if the version is 3.9.4 or later, it's ok.
   else download and instal [python](https://www.python.org/downloads/) <br/>
-2.Now install all necessary dependencing with [pip](https://pypi.org/project/pip/)<br/>
-............
-3.Download SoccerLogger<br/>
+2. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/)<br/>
+............<br/>
+3. Download SoccerLogger<br/>
 
 ### Ubuntu<br/>
 Coming Soon
