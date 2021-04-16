@@ -59,30 +59,34 @@ $ git clone https://github.com/playerank/soccerLogger.git
 
 # Run the interface
 
-1.Move in Event tagging interface --> [cd "Event Tagging Interface"]<br/>
-2.Run [python events_tagging_dashboard.py]<br/>
+1.Move in Event tagging interface<br/>
+```sh
+$ cd "Event Tagging Interface"
+```
+2.Run<br/>
+```sh
+$ python events_tagging_dashboard.py
+```
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.png)  
 3.Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```<br/>                                                                   
-4.Select file json with propertys of the match and video mp4 with the match video, when upload is complete press Start Game.
+4.Select file json with propertys of the match and video mp4 with the match video, when upload is complete press Start Game ( an alert comes out ).
 
 ![first interface](/Scheme/upload_files.png)
 
-5.Enjoy :smiley: :smiley: :smiley: :thumbsup:<br/>
+5.Enjoy :smiley: :thumbsup:<br/>
+You can select all tags
 
 ![event](/Scheme/envet_interface.png)
 
 6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/Name match/json.
 
-
-
-
-
 ## Feature
 
 - [x] Gamepad control
 - [x] Customizable Event types
-- [x] No singup/login required
+- [x] No login required
+- [x] Open Source
 - [ ] Offline support (Speech Recogintion does not go offline)
 - [ ] Auto updates
 
@@ -91,7 +95,7 @@ Once launched, on your shell you should have a success message such as the follo
 ## Tags
 
 Events which can be chosen are parameterizable, the file soccerLogger-main\Event Tagging Interface\static\game\extra_tag\extra_tag.json contains all keys used in the program. <br/>
-Standard Events are "Pass" "Cross" "Shot" "Duel", to extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
+Standard Events are "Pass", "Cross", "Shot", "Duel" and "Game Stop", to extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
 
 ![extra_tag](/Scheme/extra_tag.png)
 
