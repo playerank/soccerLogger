@@ -143,3 +143,10 @@ supervisors:	Paolo Cintia
 
 # Support
 if you need, you can email at gonnella_andrea@yahoo.it.
+
+# Video and Music
+- [Music](https://www.free-stock-music.com/)
+- [Video](https://www.videvo.net/stock-video-footage/football/)
+- [Video_Editin](https://www.adobe.com/it/products/premiere.html)
+- [Video_Recording](https://obsproject.com/)
+
