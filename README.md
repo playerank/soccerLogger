@@ -48,7 +48,7 @@ Is possible clone the repository github in your IDE.
 $ git clone https://github.com/playerank/soccerLogger.git
 ```
 When you installed all dependencing you can run or modify the program. <br/>
-The program is divide in:
+The program is divide into:
 Function | File
 -------- | ----
 Web Pages manager | events_tagging_dashboard.py
@@ -57,7 +57,7 @@ Second Interface | templeates/events_tagging.html
 First Interface | templates/home.html
 Speech Recognition | static/speech_recognition/SR.js
 Coordinate drawing control | static/gamedirection/direction.js
- | static/gamedirection/sketch.js
+"" | static/gamedirection/sketch.js
 customizable files | static/game/
 Save array management | First Interface | static/my_json/data_json.js
 
