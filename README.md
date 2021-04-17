@@ -12,19 +12,10 @@
 To provide a football event tracking tool with a logic similar to that of the most popular football games (Fifa, Pes). 
 There are already platforms that deal with tracking this data but they often have high costs and therefore are accessible only to large teams, this has created the idea of ​​an open source software accessible to all competitive levels.
 
-#Description
+# Description
 
 The code in this repository implements **Event Tagging Interface**, a web application :computer: which allows a user to define temporal window of events from soccer :soccer: video broadcasts using a gamepad :joystick:. 
 
-
-# Usage
-
-![Commands](/Scheme/controller.jpg)
-
-******************************************************************************************************************************************************************
-#Demo
-:point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
-<br>
 
 ## Installation
 
@@ -74,7 +65,13 @@ Once launched, on your shell you should have a success message such as the follo
 
 ![first interface](/Scheme/upload_files.png)
 
-5.Enjoy :smiley: :thumbsup:<br/>
+# Usage
+
+![Commands](/Scheme/controller.jpg)
+Enjoy :smiley: :thumbsup:<br/>
+
+******************************************************************************************************************************************************************
+# Demo :point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
 You can select all tags
 
 ![event](/Scheme/envet_interface.png)
