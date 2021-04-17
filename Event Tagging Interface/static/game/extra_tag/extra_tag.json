@@ -22,7 +22,7 @@
         "k0": {
             "0": " ",
             "1": "Key Pass",
-            "2": "Possession"
+            "2": "Ball Possession"
         },        
         "k1":{
             "0": " "
@@ -40,11 +40,12 @@
         "k6": {"0" : " "},
         "k7": {"0" : " "},
         "k8": {"0" : " "},
-        "k9": {"0" : "Offside",
+        "k9": {"0" : " ",
                "1" : "Line out",
-               "2" : "Penalty kick",
-               "3" : "Penalty kick",
-               "4" : "Match Start"
+               "2" : "foul play",
+               "3" : "Offside",
+               "4" : "Penalty kick",
+               "5" : "Match Start"
             },
         "k10": {"0" : " "},
         "k11": {"0" : " "},

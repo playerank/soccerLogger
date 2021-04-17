@@ -138,6 +138,7 @@
             set_start_variable(this, key_0)
             active_save_event = false
             count_duel_press = 0
+            count_pass = 1
             start_stop = true
             if($("#possession_player").is(":visible") == true) {
               $("#possession_player").hide()
@@ -195,6 +196,7 @@
             set_start_variable(this, key_1)
             active_save_event = false
             count_duel_press = 0
+            count_cross = 1
             start_stop = true
             active_save_event = false
 
@@ -254,6 +256,7 @@
             set_start_variable(this, key_2)
             active_save_event = false
             count_duel_press = 0
+            count_shot = 1
             start_stop = true
             if($("#possession_player").is(":visible") == true){
               $("#possession_player").hide()
@@ -308,31 +311,6 @@
               last_button = 'button2'
           });
 
-//active speech recogniction
-          gamepad.before('button5', () => {
-
-              if($('#name_event').val() != key_5){
-                $("#player_number").val( speech_duel(this,"player_number"))
-              }else{
-                
-                count_duel_press -= 1
-                switch (count_duel_press){
-                  case 0:
-                    $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
-                    count_duel_press += 1
-                    break;
-                  case 1:
-                    $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
-                    count_duel_press += 1
-                    break;
-                  case -1:
-                    win = $("#winner_player").val( speech_duel(this,"winner_player"))
-                    count_duel_press += 1
-                    active_save_event = true
-                    break;
-                }
-              }
-            });
 
 //event DUEL
 //the duel is divide in 4 ste
@@ -407,6 +385,32 @@
 
           });
 
+          //active speech recogniction
+          gamepad.before('button5', () => {
+
+          if($('#name_event').val() != key_5){
+            $("#player_number").val( speech_duel(this,"player_number"))
+          }else{
+            
+            count_duel_press -= 1
+            switch (count_duel_press){
+              case 0:
+                $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
+                count_duel_press += 1
+                break;
+              case 1:
+                $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
+                count_duel_press += 1
+                break;
+              case -1:
+                win = $("#winner_player").val( speech_duel(this,"winner_player"))
+                count_duel_press += 1
+                active_save_event = true
+                break;
+            }
+          }
+          });
+
 //go to the previous frame
           gamepad.on('button6', () => {
             double_press = 0
@@ -459,6 +463,7 @@
             set_start_variable()
             active_save_event = false
             count_duel_press = 0
+            count_game_stop = 1
             
             $('#name_event').val(key_9)
 
@@ -610,9 +615,11 @@
                     if(list_tag["k2"][val_key] == "GOOL"){
                       set_color_row(this, "lawngreen")
                       isGoal=true
+                      active_save_event=true
                     }
                     else{
                       set_color_row(this, "white")
+                      active_save_event=true
                     }
                     count_shot += 1
                   }
