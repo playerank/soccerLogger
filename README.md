@@ -19,10 +19,10 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 
 ## Installation
 
-### Windows
-1.Check if Python is already installed in your pc
-
 # Normal User
+
+### Windows
+1.Check if Python is already installed in your pc<br>
 1.1. open prompt 
 ```sh
 $ py --version
@@ -76,7 +76,7 @@ Enjoy :smiley: :thumbsup:<br/>
 # Demo :point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
 
 
-6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/Name match/json.
+6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/"Name match"/json/.
 
 ## Feature
 
