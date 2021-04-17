@@ -43,10 +43,23 @@ Coming Soon
 
 
 # Developer User
-Is possible clone the repository github in your IDE. When you installed all dependencing you can run the program<br/> with comand python ./event_tagging.py, or possibily modify the code.<br/>
+Is possible clone the repository github in your IDE. 
 ```sh
 $ git clone https://github.com/playerank/soccerLogger.git
 ```
+When you installed all dependencing you can run or modify the program. <br/>
+The program is divide in:
+Function | File
+-------- | ----
+Web Pages manager | events_tagging_dashboard.py
+GamePad controller | templeates/events_tagging.html
+Second Interface | templeates/events_tagging.html
+First Interface | templates/home.html
+Speech Recognition | static/speech_recognition/SR.js
+Coordinate drawing control | static/gamedirection/direction.js
+ | static/gamedirection/sketch.js
+customizable files | static/game/
+Save array management | First Interface | static/my_json/data_json.js
 
 # Run the interface
 
@@ -56,7 +69,7 @@ $ cd "Event Tagging Interface"
 ```
 2.Run<br/>
 ```sh
-$ python events_tagging_dashboard.py
+$ python ./events_tagging_dashboard.py
 ```
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.png)  
