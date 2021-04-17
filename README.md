@@ -65,16 +65,16 @@ Once launched, on your shell you should have a success message such as the follo
 
 ![first interface](/Scheme/upload_files.png)
 
-# Usage
+# You can select all tags
+
+![event](/Scheme/envet_interface.png)
 
 ![Commands](/Scheme/controller.jpg)
 Enjoy :smiley: :thumbsup:<br/>
 
-******************************************************************************************************************************************************************
-# Demo :point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
-You can select all tags
 
-![event](/Scheme/envet_interface.png)
+# Demo :point_right: Watch it <a href="https://www.youtube.com/watch?v=6SG2Mjpv8YE">here</a>.
+
 
 6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/Name match/json.
 
