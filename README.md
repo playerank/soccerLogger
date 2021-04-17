@@ -69,7 +69,7 @@ $ cd "Event Tagging Interface"
 ```
 2.Run<br/>
 ```sh
-$ python ./events_tagging_dashboard.py
+$ python events_tagging_dashboard.py
 ```
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.png)  
@@ -105,7 +105,13 @@ Enjoy :smiley: :thumbsup:<br/>
 ## Tags
 
 Events which can be chosen are parameterizable, the file soccerLogger-main\Event Tagging Interface\static\game\extra_tag\extra_tag.json contains all keys used in the program. <br/>
-Standard Events are "Pass", "Cross", "Shot", "Duel" and "Game Stop", to extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
+Standard Events are 
+- "Pass"
+- "Cross"
+- "Shot"
+- "Duel"
+- "Game Stop"
+to extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
 
 ![extra_tag](/Scheme/extra_tag.png)
 
