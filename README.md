@@ -58,8 +58,8 @@ First Interface | templates/home.html
 Speech Recognition | static/speech_recognition/SR.js
 Coordinate drawing control | static/gamedirection/direction.js
 "" | static/gamedirection/sketch.js
-customizable files | static/game/
-Save array management | First Interface | static/my_json/data_json.js
+Customizable files | static/game/
+Save array management | static/my_json/data_json.js
 
 # Run the interface
 
