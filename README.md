@@ -29,9 +29,12 @@ $ py --version
 ```
 1.2. if the version is 3.9.4 or later, it's ok.
   else download and instal [python](https://www.python.org/downloads/) <br/>
-2. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/)<br/>
-............<br/>
-3. Download SoccerLogger<br/>
+2. Download and Dezip SoccerLogger [github](https://github.com/playerank/soccerLogger)<br/>
+![download](/Scheme/download.PNG)
+3. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/)<br/>
+```sh
+$ pip install -r requirements.txt
+```
 
 ### Ubuntu<br/>
 Coming Soon

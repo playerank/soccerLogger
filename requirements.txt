@@ -1,2 +1,4 @@
-pandas==0.25.3
-Flask==1.0.2
+Werkzeug==1.0.1
+pandas==1.2.0
+Flask==1.1.2
+Flask_Caching==1.10.1
