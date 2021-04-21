@@ -140,9 +140,10 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 # Authors and acknowledgement
-authors: Andrea Gonnella - email: gonnella_andrea@yahoo.it
-supervisors:	Paolo Cintia
-		Luca Pappalardo 
+- authors: Andrea Gonnella - email: gonnella_andrea@yahoo.it
+- supervisors:	
+	- Paolo Cintia, paolo.cintia@isti.cnr.it
+	- Luca Pappalardo, luca.pappalardo@isti.cnr.it
 
 # Support
 if you need, you can email at gonnella_andrea@yahoo.it.
