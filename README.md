@@ -31,7 +31,7 @@ $ py --version
   else download and instal [python](https://www.python.org/downloads/) <br/>
 2. Download and Dezip SoccerLogger [github](https://github.com/playerank/soccerLogger)<br/>
 ![download](/Scheme/download.PNG)
-3. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/)<br/>
+3. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/), automatically installed with python 3.9.4 (``` sh $ py -m pip --version ```)<br/>
 ```sh
 $ pip install -r requirements.txt
 ```
