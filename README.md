@@ -31,10 +31,11 @@ $ py --version
   else download and instal [python](https://www.python.org/downloads/) <br/>
 2. Download and Dezip SoccerLogger [github](https://github.com/playerank/soccerLogger)<br/>
 ![download](/Scheme/download.PNG)
-3. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/), automatically installed with python 3.9.4 (``` sh $ py -m pip --version ```)<br/>
+3. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/), automatically installed with python 3.9.4(```$ py -m pip --version ```)<br/>
 ```sh
-$ pip install -r requirements.txt
+$ py -m pip install -r requirements.txt
 ```
+
 
 ### Ubuntu<br/>
 Coming Soon
@@ -77,11 +78,11 @@ $ python events_tagging_dashboard.py
 Once launched, on your shell you should have a success message such as the following:
 ![bash](/Scheme/bash.png)  
 3.Now, you can access the interface from a browser, by accessing the following url: ```http://127.0.0.1:5000```<br/>                                                                   
-4.Select file json with propertys of the match and video mp4 with the match video, when upload is complete press Start Game ( an alert comes out ).
+4.Select file json with propertys of the match and file mp4 with the match video, when upload is complete ( an alert comes out ) press Start Game.
 
 ![first interface](/Scheme/upload_files.png)
 
-# You can select all tags
+## Now select all tags
 
 ![event](/Scheme/envet_interface.png)
 

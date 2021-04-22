@@ -112,7 +112,7 @@
 
               //scrolls the table for see last inserted row
               var temp = $('#myTable tr').length
-              document.getElementById('table_body').scrollTop = temp * 50;
+              document.getElementById('table_body').scrollTop = temp * 60;
               
               //set variable for draw
               //change the color of ellipse in start mode (green)
@@ -420,17 +420,13 @@
             vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.04);
           });
 
-//start and stop video
+//go to the next frame
           gamepad.after('button7', () => {
+            double_press = 0
             var vid = document.getElementById("myVideo");
-            
-            if(vid.paused){
-              vid.play()
-            }
-            else{
-              vid.pause();
-            }
-            vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.04);
+
+            vid.pause();
+            vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.10);
           });
 
 //show/hiden team A and B, change with active_team
@@ -517,8 +513,14 @@
                                             else { $('#active_team').val('{{name_team_A}}')};
                                           });
 
+                                          
+                                          
+          
 //event fail
           gamepad.after('button14', () => {
+              if($("#name_event").val() == "Duel"){
+                $("#winner_player_number").val($("#recovery_player_number").val())
+              }
               
               if(event_success && $("#name_event").val() != "Rest"){
                 isGoal = false
@@ -535,6 +537,9 @@
 
 //event success
           gamepad.after('button15', () => {
+              if($("#name_event").val() == "Duel"){
+                $("#winner_player_number").val($("#possession_player_number").val()) 
+              }
               
               if(event_success && $("#name_event").val() != "Rest"){
                 isGoal = false
@@ -1281,7 +1286,7 @@
     <div class="row justify-content-md-center">
 
       <div class="col-xs-3 offset-xs-1" id="possession_player" style="display:none">
-        <input class="text-center" type="text hidden" id="possession_player_number" vlue = "0">
+        <input class="text-center" type="text hidden" id="possession_player_number" value = "0">
       </div>
 
       <button type="button" class="btn-lg" id="delete_event">

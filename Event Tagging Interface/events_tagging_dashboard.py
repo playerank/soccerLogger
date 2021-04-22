@@ -64,28 +64,32 @@ def init():
 	#return redirect("/" + matches_value[0] + "_Events", code=302)
 
 
+'''
+This method Runs when in the home.html interface we update a file with json match and/or mp4 match
+1. if the upload is complete show alert "upload complete"
+2. otherwise show an error message
+'''
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     		
 		if request.method == 'POST':
 				
-				f = request.files.getlist("file")
+				file_temp = request.files.getlist("file")
 				
-				if len(f) == 0 or (f[0].content_type != "video/mp4" and f[0].content_type != 'application/json'):
+				if len(file_temp) == 0 or (file_temp[0].content_type != "video/mp4" and file_temp[0].content_type != 'application/json'):
     					
 					try:
 						file_json = 'static/game/match/match.json'
-						data = json.load(open(file_json))
-						name_match = data["home_team"]["team_id"] + " " +  data["away_team"]["team_id"]
+						data = json.load(open(file_json))	
+						name_match = data["home_team"]["team_id"] + " " +  data["away_team"]["team_id"]	
 					except:
-						message = "invalid file"
-					
+						message = "match.json invalid, control if the sintax of json file is correct"
 						condition = "True"
 						return render_template("home.html", condition = condition, message = message)
 						
 					return redirect("/" + name_match , code=302)
 				else:
-					for elem in f:
+					for elem in file_temp:
 						if elem.content_type == "video/mp4":
 								elem.save(os.path.join(os.path.abspath("./static/game/video"), "game.mp4"))
 						else:
@@ -97,28 +101,34 @@ def upload_file():
 				
 				return render_template("home.html", condition = condition, message = message)
 
+
 '''
-The function matchView allows to change the events and the video to show.
+This method Runs when in the home.html interface is clicking the start game button.
+1. it's controlling if the video and json are exist in they folder.
+2. if both two files exist -> run the events_tagging.html interface
+   otherwise it display an error message
 '''
 @app.route('/<match>')
 def matchView(match):
 
-	
+	e = ""
 	try:
+
+		video_link = '/static/game/video/game.mp4'
+		e = "game.mp4 not found or invalid"
+
 		file_json = 'static/game/match/match.json'
 		data = json.load(open(file_json))
+		e = "match.json not found or invalid"
 		
-		video_link = 'static/game/video/' + os.listdir('static/game/video')[0]
-				
 		tag_json = 'static/game/extra_tag/extra_tag.json'
 		data_tag = json.load(open(tag_json))
+		e = "extra_tag.json not found or invalid"
 				 
 	except:
-		print("file not found 3")
-		message = "file not found"
-					
+		print(e)					
 		condition = True
-		return render_template("home.html", condition = condition, message = message)
+		return render_template("home.html", condition = condition, message = e)
 
 	date_last_update =""
 
@@ -156,10 +166,16 @@ def matchView(match):
 							name_team_B=name_team_B, squad_A=squad_A, squad_B=squad_B, name = {'n':match} )
 
 '''
-This method allows to update all the tagged events in json format
+This method Runs when in the events_tagging.html interface is clicking the save button.
+1. recive a Post request (with array of events, in json format)
+2. add new file into Data\name_match\json (don't overwrites the precedent files)
+3. reload home.html interface
 '''
 @app.route('/<match>/update', methods=['POST', 'GET'])
 def save_events(match):
+    	
+	e = "erro save"
+	condition = True
 	if request.method == "POST":
 
 
@@ -170,7 +186,6 @@ def save_events(match):
 			array_of_events = array_of_events.decode('utf8').replace("'", '"')
 			
 			
-
 			#load string in json format
 			try:
 				data = json.loads(array_of_events)
@@ -188,22 +203,31 @@ def save_events(match):
 			if not "csv" in os.listdir("./Data/"+ match):
     				os.mkdir(name_directory_csv)
 		
-
-			number_of_files_json = len(os.listdir(name_directory_json))+1
-
-			name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
 			
+			number_of_files_json = len(os.listdir(name_directory_json))+1
+			
+			
+			name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
+			while os.path.exists(name_file_json):
+    				number_of_files_json =+ 1
+    				name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
+
+			
+			e = "erro save"
 
 			#write json in file
 			with open(name_file_json, "w") as outfile:
 				json.dump(data, outfile)
+				
+			e = "Save complete in Data folder"
 			
 			#convert json file in csv
 			# number_of_files_csv = len(os.listdir(name_directory_csv))+1
 			# name_file_csv = name_directory_csv + "/" + match + "_" + str(number_of_files_csv)+".csv"
 			# df = pd.read_json(name_file_json)
-			# df.to_csv(name_file_csv, index=None)
-			print("ok")
+			# df.to_csv(name_file_csv, index=None)			
+	
+	return render_template("home.html", condition = condition, message = e)
 			
 
 if __name__ == '__main__':

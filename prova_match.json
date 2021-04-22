@@ -23,12 +23,12 @@
           {"shirt_number" : 3,  "name":"Presnel KIMPEMBE" , "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 8,  "name":"Thomas LEMAR" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 11, "name":"Ousmane DEMBELE" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
-          {"shirt_number" : 12, "name":"Corentin TOLISSO" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0}
+          {"shirt_number" : 12, "name":"Corentin TOLISSO" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 15, "name":"steven NZONZI" ,  "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 17, "name":"Adil RAMI" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 18, "name":"Nabil FEKIR" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 19, "name":"Djibril SIDIBE" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
-          {"shirt_number" : 20, "name":"Florian THAUVIN" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0}
+          {"shirt_number" : 20, "name":"Florian THAUVIN" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 22, "name":"Benjamin MENDY" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0}
         ],
         "lineup": [
@@ -37,7 +37,7 @@
           {"shirt_number" : 5, "name":"Samul UMTITI" , "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 4, "name":"Raphael VARAN" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 2, "name":"Benjamin PAVARD" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
-          {"shirt_number" : 14,"name":"Blaise MATUIDI" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0}
+          {"shirt_number" : 14,"name":"Blaise MATUIDI" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 6, "name":"Paul POGBA" ,  "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 7, "name":"Antoine GRIEZMANN" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 13,"name":"Ngolo KANTE" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
@@ -57,7 +57,7 @@
           {"shirt_number" : 4, "name":"Cristian ANSALDI" , "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 5, "name":"Lucas BIGLIA",   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 6, "name":"Federico Fazio" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
-          {"shirt_number" : 8,"name":"Marcos ACUNA" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0}
+          {"shirt_number" : 8,"name":"Marcos ACUNA" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 9, "name":"Gonzalo HIGUAIN" ,  "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 13, "name":"Maximiliano MEZA" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},
           {"shirt_number" : 18,"name":"Eduardo SALVIO" ,   "goals" : 0, "own_goals" : 0, "played_minutes" : 0, "player_id" : 0, "red_cards" : 0, "yellow_card" : 0},

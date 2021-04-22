@@ -22,14 +22,16 @@
         "k0": {
             "0": " ",
             "1": "Key Pass",
-            "2": "Ball Possession"
+            "2": "Ball Possession",
+            "3": "Long Passage"
         },        
         "k1":{
             "0": " "
         },
         "k2":{
-            "0" : " ",
-            "1":"GOOL"
+            "0": " ",
+            "1": "GOOL",
+            "2": "GoalPost"
         },
         "k3" :{"0" : " "},
         "k4": {"0" : " "},
