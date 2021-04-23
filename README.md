@@ -2,7 +2,6 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 [![codecov.io Code Coverage](https://img.shields.io/codecov/c/github/dwyl/hapi-auth-jwt2.svg?maxAge=2592000)](https://codecov.io/github/dwyl/hapi-auth-jwt2?branch=master)
 
-<a href="http://example.com/" target="_blank">Hello, world!</a>
 
 <p align="center">
     <img src="/Scheme/Logo1.png" width="300" height="300">
@@ -30,7 +29,7 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 $ py --version
 ```
 1.2. if the version is 3.9.4 or later, it's ok.
-  else download and instal [python](https://www.python.org/downloads/) <br/>
+  else download and instal [python](https://www.python.org/downloads/){:target="_blank"} <br/>
 2. Download and Dezip SoccerLogger [github](https://github.com/playerank/soccerLogger)<br/>
 ![download](/Scheme/download.PNG)
 3. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/), automatically installed with python 3.9.4(```$ py -m pip --version ```)<br/>
