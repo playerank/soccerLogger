@@ -2,6 +2,8 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 [![codecov.io Code Coverage](https://img.shields.io/codecov/c/github/dwyl/hapi-auth-jwt2.svg?maxAge=2592000)](https://codecov.io/github/dwyl/hapi-auth-jwt2?branch=master)
 
+<a href="http://example.com/" target="_blank">Hello, world!</a>
+
 <p align="center">
     <img src="/Scheme/Logo1.png" width="300" height="300">
 </p>
