@@ -20,13 +20,17 @@ name_folder = "./Data/" + match_code + "/json"
 #read all single ivent in all files of events, save in a array
 for file in os.listdir(name_folder):
     print(file)
-    with open(name_folder+"/"+file,'r') as fi:
-        dict = json.load(fi)
-        print("number of events in " + file + " : " + str(len(dict)))
-        for event in dict:
-            count += 1
-            events.append(event)
-        
+    if file.endswith('.json'):
+        with open(name_folder+"/"+file,'r') as fi:
+                dict = json.load(fi)
+                print("number of events in " + file + " : " + str(len(dict)))
+                for event in dict:
+                    count += 1
+                    events.append(event)
+    else:
+        print("sorry, this file isn't json")
+
+            
 print("Number of events in Complete File : " + str(count))
 
 # write the array with events in a json file
