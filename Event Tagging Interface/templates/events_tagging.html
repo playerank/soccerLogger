@@ -140,6 +140,10 @@
             count_duel_press = 0
             count_pass = 1
             start_stop = true
+            $("#possession_player_number").val("")
+            $("#recovery_player_number").val("")
+            $("#winner_player_number").val("")
+
             if($("#possession_player").is(":visible") == true) {
               $("#possession_player").hide()
               $("#recovery_player").hide()
@@ -199,6 +203,9 @@
             count_cross = 1
             start_stop = true
             active_save_event = false
+            $("#possession_player_number").val("")
+            $("#recovery_player_number").val("")
+            $("#winner_player_number").val("")
 
             if($("#possession_player").is(":visible") == true){
               $("#possession_player").hide()
@@ -258,6 +265,10 @@
             count_duel_press = 0
             count_shot = 1
             start_stop = true
+            $("#possession_player_number").val("")
+            $("#recovery_player_number").val("")
+            $("#winner_player_number").val("")
+
             if($("#possession_player").is(":visible") == true){
               $("#possession_player").hide()
               $("#recovery_player").hide()
@@ -327,6 +338,7 @@
 
             //set name event and time_start
             $('#name_event').val(key_5)
+            $('#player_number').val("")
             var vid = document.getElementById("myVideo");
 
             
@@ -385,7 +397,7 @@
 
           });
 
-          //active speech recogniction
+//active speech recogniction
           gamepad.before('button5', () => {
 
           if($('#name_event').val() != key_5){
@@ -417,16 +429,16 @@
             var vid = document.getElementById("myVideo");
 
             vid.pause();
-            vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.04);
+            vid.currentTime = Math.min(vid.duration, vid.currentTime - 0.20);
           });
 
 //go to the next frame
-          gamepad.after('button7', () => {
+          gamepad.on('button7', () => {
             double_press = 0
             var vid = document.getElementById("myVideo");
 
             vid.pause();
-            vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.10);
+            vid.currentTime = Math.min(vid.duration, vid.currentTime + 0.20);
           });
 
 //show/hiden team A and B, change with active_team
@@ -460,10 +472,13 @@
             active_save_event = false
             count_duel_press = 0
             count_game_stop = 1
-            
-            $('#name_event').val(key_9)
 
             $('#player_number').val("")
+            $("#possession_player_number").val("")
+            $("#recovery_player_number").val("")
+            $("#winner_player_number").val("")
+            
+            $('#name_event').val(key_9)
             
             if($("#possession_player").is(":visible") == true){
               $("#possession_player").hide()
@@ -708,7 +723,7 @@
                    })
             .on('up0',     () => {
                     if (cordinateEndY > 0){
-                      cordinateEndY -= 2
+                      cordinateEndY -= 3
                     }
                     })
             .after('up0',     () => {
@@ -723,7 +738,7 @@
                     start_position = false })
             .on('down0',     () => {
                     if ( cordinateEndY < max_height){
-                      cordinateEndY += 2
+                      cordinateEndY += 3
                     }
                     })
             .after('down0',     () => {
@@ -737,7 +752,7 @@
                     start_position = false })
             .on('right0',     () => {
                     if(cordinateEndX < (max_width) ){
-                      cordinateEndX += 2 
+                      cordinateEndX += 3
                     }
                     })
             .after('right0',     () => {
@@ -751,7 +766,7 @@
                     start_position = false })
             .on('left0',     () => {
                     if(cordinateEndX > 0){
-                      cordinateEndX -= 2 
+                      cordinateEndX -= 3
                     }
                     })
             .after('left0',     () => {
@@ -785,7 +800,7 @@
                     end_position = false })
             .on('up1',     () => {
                     if (cordinateEndY > 0){
-                      cordinateEndY -= 2
+                      cordinateEndY -= 3
                     }
                     })
             .after('up1',     () => {
@@ -800,7 +815,7 @@
                     end_position = false })
             .on('down1',     () => {
                     if ( cordinateEndY < max_height){
-                      cordinateEndY += 2
+                      cordinateEndY += 3
                     }
                     })
             .after('down1',     () => {
@@ -814,7 +829,7 @@
                     end_position = false })
             .on('right1',     () => {
                     if(cordinateEndX < max_width ){
-                      cordinateEndX += 2 
+                      cordinateEndX += 3
                     }
                     })
             .after('right1',     () => {
@@ -828,7 +843,7 @@
                     end_position = false })
             .on('left1',     () => {
                     if(cordinateEndX > 0){
-                      cordinateEndX -= 2 
+                      cordinateEndX -= 3
                     }
                     })
             .after('left1',     () => {
@@ -1048,9 +1063,9 @@
                 var node1 = document.createTextNode($("#time_event_start").val())
                 var node2 = document.createTextNode($("#time_event_end").val())
 
-                if($('#name_event').val()==key_5){
+                if($('#name_event').val() == key_5){
                   var node3 = document.createElement("pre")
-                  var text = document.createTextNode("POS "+$("#possession_player_number").val()+"\n"+"REC "+$("#recovery_player_number").val()+"\n"+"WIN "+$("#winner_player_number").val())
+                  var text = document.createTextNode("POS " + $("#possession_player_number").val()+"\n"+"REC " + $("#recovery_player_number").val()+"\n" + "WIN " + $("#winner_player_number").val())
                   node3.appendChild(text)
                 }
                 else{
@@ -1081,6 +1096,7 @@
                   'team_id' : $("#active_team").val(),
                   'timestamp' : "", 
                   'period' : "", 
+                  'player_number' : $("#player_number").val(),
                   'possession_number' : $("#possession_player_number").val(),
                   'recovery_number' : $("#recovery_player_number").val(),
                   'winner_number' : $("#winner_player_number").val(),
@@ -1090,7 +1106,7 @@
                   'end_position' : {"x" : convertX_px_mt(cordinateEndEventX,max_width), "y" : convertY_px_mt(cordinateEndEventY, max_height)} ,
                 }
 
-                event_array = add_to_array(this,event_json, event_array)
+                event_array = add_to_array(this, event_json, event_array)
                 
                 //Select ideal color before to add in list
                 if(isGoal){
@@ -1298,11 +1314,11 @@
       </button>
 
       <div class="col-xs-3 offset-xs-1" id="recovery_player" style="display:none">
-        <input class="text-center" type="text" id="recovery_player_number" vlue = "0">
+        <input class="text-center" type="text" id="recovery_player_number" value = "0">
       </div>
 
       <div class="col-xs-3 offset-xs-1" id="winner_player" style="display:none">
-        <input class="text-center" type="text" id="winner_player_number" vlue = "0">
+        <input class="text-center" type="text" id="winner_player_number" value = "0">
       </div>
 
       

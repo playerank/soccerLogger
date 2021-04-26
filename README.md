@@ -28,9 +28,8 @@ The code in this repository implements **Event Tagging Interface**, a web applic
 ```sh
 $ py --version
 ```
-[go](http://stackoverflow.com){:target="_blank"}.
 1.2. if the version is 3.9.4 or later, it's ok.
-  else download and instal [python](https://www.python.org/downloads/){:target="noopener"} <br/>
+  else download and instal [python](https://www.python.org/downloads/) <br/>
 2. Download and Dezip SoccerLogger [github](https://github.com/playerank/soccerLogger)<br/>
 ![download](/Scheme/download.PNG)
 3. Now install all necessary dependencing with [pip](https://pypi.org/project/pip/), automatically installed with python 3.9.4(```$ py -m pip --version ```)<br/>

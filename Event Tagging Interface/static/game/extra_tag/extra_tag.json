@@ -37,7 +37,8 @@
         "k4": {"0" : " "},
         "k5":{
             "0":" ",
-            "1":"Aerial Duel"
+            "1":"Aerial Duel",
+            "2":"Substitution"
         },
         "k6": {"0" : " "},
         "k7": {"0" : " "},
@@ -47,7 +48,8 @@
                "2" : "foul play",
                "3" : "Offside",
                "4" : "Penalty kick",
-               "5" : "Match Start"
+               "5" : "Match Start",
+               "6" : "Exultation"
             },
         "k10": {"0" : " "},
         "k11": {"0" : " "},
