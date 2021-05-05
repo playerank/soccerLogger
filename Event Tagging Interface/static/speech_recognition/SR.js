@@ -1,7 +1,7 @@
 
 //attiva il microfono e ascolta cosa viene pronunciato, valuta se è un numero lo restituisce
 //modificando il campo del numero del giocatore
-function speech(obj, element){
+function speech(obj, element, lan){
     
     //creating and setting some parameter
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
@@ -17,7 +17,7 @@ function speech(obj, element){
     recognition.grammers = speechRecognitionGrammerList
 
     
-    let language = "it-it"
+    let language = lan
         
     recognition.continuous = false
     recognition.lang = language
@@ -31,6 +31,7 @@ function speech(obj, element){
     }
 
     recognition.onresult = function(e){
+        
         var tran = e.results[0][0].transcript
         var conf = e.results[0][0].confidence
         
@@ -42,6 +43,7 @@ function speech(obj, element){
 
         $("#player_number").val( tran )
         $("#player_name")
+        
         return tran
     }
 
@@ -57,7 +59,7 @@ function speech(obj, element){
 
 //attiva il microfono e ascolta cosa viene pronunciato, valuta se è un numero lo restituisce
 //ad ogni diversa invocazione va a modificare campi specifici
-function speech_duel(obj, element, count_duel_press){
+function speech_duel(obj, element, lan){
         
     //creating and setting some parameter
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
@@ -72,8 +74,7 @@ function speech_duel(obj, element, count_duel_press){
 
     recognition.grammers = speechRecognitionGrammerList
 
-    
-    let language = "it-it"
+    let language = lan
         
     recognition.continuous = false
     recognition.lang = language
@@ -83,6 +84,7 @@ function speech_duel(obj, element, count_duel_press){
 
     //events
     recognition.onstart = function() {
+        
         if(element != "winner_player")
             document.getElementById(element).style.backgroundColor = 'aquamarine'
         
@@ -93,13 +95,11 @@ function speech_duel(obj, element, count_duel_press){
         var conf = e.results[0][0].confidence
         
         tran = convert_string_in_number(tran)
-
+        console.log(tran)
         //select possession_player or recovery_player
         el = "#"+element
         $(el).val( tran )
-        
-        
-        
+                
         while(tran == ""){}
 
         document.getElementById(element).style.backgroundColor = 'white' ;
@@ -151,7 +151,7 @@ function set_duel_winner(obj){
 
 function convert_string_in_number(str){
     //transform the string number of speech recognition in int number
-
+    console.log(str)
     let tran = str;
     tran = tran.toLowerCase(); 
 
@@ -167,13 +167,39 @@ function convert_string_in_number(str){
                 break;
             case "due":
                 return 2;
+                break;
+            case "do it":
+                return 2;
+                break; 
+            case "schuh":
+                return 2;
+                break;
+            case "Joe":
+                return 2;
+                break; 
+            case "chew":
+                return 2;
+                break; 
+            case "Quattro":
+                return 4;
                 break; 
             case "sei":
                 return 6;
                 break; 
+            case "can":
+                return 10;
+                break;
+            case "tan":
+                return 10;
+                break; 
             case "xxx":
                 return 30;
+                break; 
+            case "hey":
+                return 8;
                 break;  
+             
+             
             default:
                 return NaN;
                 break;   

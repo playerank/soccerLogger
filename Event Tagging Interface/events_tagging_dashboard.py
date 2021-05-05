@@ -173,14 +173,16 @@ This method Runs when in the events_tagging.html interface is clicking the save 
 '''
 @app.route('/<match>/update', methods=['POST', 'GET'])
 def save_events(match):
-    	
+    
 	e = "erro save"
 	condition = True
 	if request.method == "POST":
+   			
 
 
 			#recive the array with events
 			array_of_events = request.get_data()
+			
 
 			#codify type bytes in type string
 			array_of_events = array_of_events.decode('utf8').replace("'", '"')
@@ -202,16 +204,16 @@ def save_events(match):
     				os.mkdir(name_directory_json)
 			if not "csv" in os.listdir("./Data/"+ match):
     				os.mkdir(name_directory_csv)
-		
 			
 			number_of_files_json = len(os.listdir(name_directory_json))+1
-			
-			
-			name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
-			while os.path.exists(name_file_json):
-    				number_of_files_json =+ 1
-    				name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
 
+			name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
+			
+			while os.path.exists(name_file_json):
+    				number_of_files_json += 1
+    				name_file_json = name_directory_json + "/" + match + "_" + str(number_of_files_json)+".json"
+					
+					
 			
 			e = "erro save"
 

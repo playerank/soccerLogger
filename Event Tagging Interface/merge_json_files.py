@@ -35,6 +35,7 @@ for file in os.listdir(name_folder):
                 print("number of events in " + file + " : " + str(len(dict)))
                 for event in dict:
                     if event != {}:
+                        event["event_id"] =count
                         count += 1
                         events.append(event)
                     

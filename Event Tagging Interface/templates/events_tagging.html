@@ -85,6 +85,8 @@
       let resetDraw = false
       let active_save_event = false
       
+      
+      var lan = "en-US";
 
       gameControl
         .on('connect', gamepad => {
@@ -104,6 +106,7 @@
 
 //add new event with double click
           gamepad.after('button13', () => {
+            console.log(lan)
 
             if (last_button != 'button13' && double_press == 1 && active_save_event) {
               double_press = 0
@@ -185,7 +188,7 @@
               $("#time_event_end").val(time_end)
 
               //active speech
-              number = speech(this, "player_number")
+              number = speech(this, "player_number", lan)
 
               event_success = true
 
@@ -247,7 +250,7 @@
             $("#time_event_end").val(time_end)
 
             //active speech recogniction
-            number = speech(this, "player_number")
+            number = speech(this, "player_number", lan)
 
             //active button14-15
             event_success = true
@@ -314,7 +317,7 @@
               }
               $("#time_event_end").val(time_end)
               //active speech recogniction
-              number = speech(this, "player_number")
+              number = speech(this, "player_number", lan)
 
               //active button14-15
               event_success = true
@@ -330,6 +333,7 @@
 //step 2 : recovery player number
 //step 3 : winner player number
           gamepad.before('button3', () => {
+            
 
             //set color row and all field for new event
             set_start_variable(this, key_5)
@@ -356,11 +360,11 @@
                 vid.play()
                 break
               case 1:
-                $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
+                $("#recovery_player_number").val( speech_duel(this,"recovery_player_number", lan))
 
                 break;
               case 2:
-                win = $("#winner_player").val( speech_duel(this, "winner_player"))
+                win = $("#winner_player").val( speech_duel(this, "winner_player", lan))
                 event_success = true
                 active_save_event = true
 
@@ -376,7 +380,7 @@
                 $("#possession_player").show()
 
                 $("#recovery_player").show()
-                $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
+                $("#possession_player_number").val( speech_duel(this,"possession_player_number", lan))
                 
                 vid.pause()
 
@@ -407,15 +411,15 @@
             count_duel_press -= 1
             switch (count_duel_press){
               case 0:
-                $("#possession_player_number").val( speech_duel(this,"possession_player_number"))
+                $("#possession_player_number").val( speech_duel(this,"possession_player_number", lan))
                 count_duel_press += 1
                 break;
               case 1:
-                $("#recovery_player_number").val( speech_duel(this,"recovery_player_number"))
+                $("#recovery_player_number").val( speech_duel(this,"recovery_player_number", lan))
                 count_duel_press += 1
                 break;
               case -1:
-                win = $("#winner_player").val( speech_duel(this,"winner_player"))
+                win = $("#winner_player").val( speech_duel(this,"winner_player", lan))
                 count_duel_press += 1
                 active_save_event = true
                 break;
@@ -1144,6 +1148,17 @@
 
       });
     </script>
+
+    <script>
+
+      function getSelectedLanguage(){
+        let language_val = document.getElementById("dropdown").value
+        lan = language_val
+      }
+    </script>
+
+    
+
     <style>
       body{
           background-color: black;          
@@ -1157,12 +1172,14 @@
 
       <span class="navbar-brand mb-2 mt-2 display2">Soccer Logger</span>
 
-      <div class="col-sm-3"></div>
+      <div class="col-sm-2"></div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-2">
         <h2 class="navbar-brand mb-2 mt-2 display2" style="color: white">{{ match_name }}</h2>
       </div>
+     
 
+      <div class="col-sm-2"></div>
 
       <div class="col-xs-3">
         <div class="row border border-secondary rounded-top">
@@ -1171,6 +1188,14 @@
           </div>
         </div>
       </div>
+
+      <div class="col-sm"></div>
+
+      
+      <select id="dropdown" onchange="getSelectedLanguage()">
+        <option value="en-US" selected="selected">ENG</option>
+        <option value="it-it">ITA</option>
+      </select>
 
       <div class="col-sm-2 offset-sm-2">
         <button type="button" class="btn-lg" id="delete_event">
@@ -1292,8 +1317,6 @@
       <div class="col-xs">
         <input class="text-center" type="text" id="y_end" style="width: 100px;" value = "0">        
       </div>
-      
-          
     </div>
 
     <p></p>
