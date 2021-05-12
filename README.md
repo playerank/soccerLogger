@@ -87,14 +87,14 @@ Once launched, on your shell you should have a success message such as the follo
 
 ![event](/Scheme/envet_interface.png)
 
-![Commands](/Scheme/controller.jpg)
+![Commands](/Scheme/base.jpg)
 Enjoy :smiley: :thumbsup:<br/>
 
 
 # Demo :point_right: Watch it <a href="https://youtu.be/EMZKAvcXufA">here</a>.
 
 
-6.Once the matches are annotated, click on the save buttom and a json file with the annotation is saved in the path Event Tagging Interface/Data/"Name match"/json/.
+6.Once the matches are annotated, click on the save buttom and a json file with the annotation, is saved in the path Event Tagging Interface/Data/"Name match"/json/.
 
 ## Feature
 
@@ -102,11 +102,9 @@ Enjoy :smiley: :thumbsup:<br/>
 - [x] Customizable Event types
 - [x] No login required
 - [x] Open Source
-- [ ] Offline support (Speech Recogintion does not go offline)
-- [ ] Auto updates
+- [ ] Offline support (Speech Recogintion doesn't work offline)
 
 # Customizable
-
 ## Tags
 
 Events which can be chosen are parameterizable, the file soccerLogger-main\Event Tagging Interface\static\game\extra_tag\extra_tag.json contains all keys used in the program. <br/>
@@ -116,7 +114,8 @@ Standard Events are
 - "Shot"
 - "Duel"
 - "Game Stop"
-to extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
+
+To extends and personalized all these events there are multiple Extra Tags for each events (in the same file).
 
 ![extra_tag](/Scheme/extra_tag.png)
 
